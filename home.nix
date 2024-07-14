@@ -17,8 +17,7 @@ in
       kitty
       htop
       fzf
-      #waybar
-      #pavucontrol
+      bitwarden
       (pkgs.nerdfonts.override { fonts = [ "NerdFontsSymbolsOnly" ]; })
     ];
   };
