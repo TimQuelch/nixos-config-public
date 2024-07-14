@@ -74,7 +74,10 @@
   users.users.timquelch = {
     isNormalUser = true;
     extraGroups = [ "wheel" "networkmanager" ]; # Enable ‘sudo’ for the user.
+    shell = pkgs.zsh;
   };
+
+  programs.zsh.enable = true;
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
