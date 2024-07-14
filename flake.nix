@@ -7,10 +7,20 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = inputs@{ nixpkgs, home-manager, ... }: {
+  outputs = inputs@{ nixpkgs, home-manager, ... }:
+  let
+    systems = [
+      "aarch64-linux"
+      "i686-linux"
+      "x86_64-linux"
+      "aarch64-darwin"
+      "x86_64-darwin"
+    ];
+    forAllSystems = nixpkgs.lib.genAttrs systems;
+  in {
     nixosConfigurations = {
-      nixos = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
+      nixos = let system = "x86_64-linux"; in nixpkgs.lib.nixosSystem {
+        inherit system;
         modules = [
           ./configuration.nix
           home-manager.nixosModules.home-manager
@@ -20,11 +30,14 @@
             home-manager.backupFileExtension = "backup";
             home-manager.users.timquelch = import ./home.nix;
 
+            home-manager.extraSpecialArgs = { inherit (inputs) self; inherit system; };
+
             # Optionally, use home-manager.extraSpecialArgs to pass
             # arguments to home.nix
           }
         ];
       };
     };
+    packages = forAllSystems (system: import ./pkgs nixpkgs.legacyPackages.${system});
   };
 }

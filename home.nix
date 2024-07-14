@@ -1,5 +1,7 @@
-{ config, pkgs, ... }:
-
+{ config, pkgs, self, system, ... }:
+let
+  mypkgs = self.packages.${system};
+in
 {
   home.stateVersion = "24.05";
 
@@ -78,6 +80,9 @@
       save = 100000;
       size = 100000;
     };
+    initExtra = ''
+      source ${mypkgs.fzf-tab-completion}/zsh/fzf-zsh-completion.sh
+    '';
   };
 
   programs.z-lua = {
