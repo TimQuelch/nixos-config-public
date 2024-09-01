@@ -3,6 +3,10 @@ let
   mypkgs = self.packages.${system};
 in
 {
+  imports = [
+    ./modules/shell/fzf-tab-completion.nix
+  ];
+
   home.stateVersion = "24.05";
 
   home = {
@@ -21,7 +25,7 @@ in
       (pkgs.nerdfonts.override { fonts = [ "NerdFontsSymbolsOnly" ]; })
     ];
   };
-  fonts.fontconfig.enable = true  ;
+  fonts.fontconfig.enable = true;
 
 
   wayland.windowManager.hyprland.enable = false;
@@ -76,12 +80,9 @@ in
       ignoreDups = true;
       ignoreSpace = true;
       ignorePatterns = [ "cd" "z" "exit" "pwd" "ls" ];
-      save = 100000;
+      save = 100000 ;
       size = 100000;
     };
-    initExtra = ''
-      source ${mypkgs.fzf-tab-completion}/zsh/fzf-zsh-completion.sh
-    '';
   };
 
   programs.z-lua = {
@@ -89,4 +90,6 @@ in
     enableZshIntegration = true;
     options = [ "enhanced" "once" "fzf" ];
   };
+
+  modules.shell.fzf-tab-completion.enable = true;
 }

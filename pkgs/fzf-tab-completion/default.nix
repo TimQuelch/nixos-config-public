@@ -11,11 +11,11 @@ stdenv.mkDerivation {
     sha256 = "sha256-ds+GgCTXXavaELCy0MxAGHTPp2MFoFohm/gPkQCRuXU=";
   };
 
-  buildPhase = ''
-    mkdir -p bin
-    echo 'dirname $0' > bin/get-fzf-tab-completion-dir.sh
-    chmod +x bin/get-fzf-tab-completion-dir.sh
-  '';
+  # buildPhase = ''
+  #   mkdir -p bin
+  #   echo 'dirname $0' > bin/get-fzf-tab-completion-dir.sh
+  #   chmod +x bin/get-fzf-tab-completion-dir.sh
+  # '';
 
   installPhase = "cp -r . $out/";
 }
