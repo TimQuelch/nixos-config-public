@@ -19,7 +19,7 @@
     forAllSystems = nixpkgs.lib.genAttrs systems;
   in {
     nixosConfigurations = {
-      nixos = let system = "x86_64-linux"; in nixpkgs.lib.nixosSystem {
+      epsilon = let system = "x86_64-linux"; in nixpkgs.lib.nixosSystem {
         inherit system;
         modules = [
           ./configuration.nix
