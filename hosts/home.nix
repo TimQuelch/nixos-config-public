@@ -5,6 +5,20 @@
     ../modules/shell/fzf-tab-completion.nix
   ];
 
+  # Setup secrets
+  sops = {
+    defaultSopsFile = ../secrets/secrets.yaml;
+    age.keyFile = "${config.xdg.configHome}/sops/age/sops-nix.txt";
+    age.generateKey = true;
+  };
+
+  sops.secrets = {
+    "ssh_auth_keys/primary_github" = {};
+    "ssh_auth_keys/primary_github.pub" = {};
+    "ssh_auth_keys/client_github" = {};
+    "ssh_auth_keys/client_github.pub" = {};
+  };
+
   home = {
     username = user;
     homeDirectory = "/home/${user}";
@@ -25,6 +39,7 @@
       dust
       ncdu
       sops
+      age
     ];
     sessionVariables = {
       EDITOR = "vim";

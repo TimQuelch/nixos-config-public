@@ -43,6 +43,7 @@ let
       homeManagerModuleList = [
         ./home.nix
         ./${name}/home.nix
+        inputs.sops-nix.homeManagerModules.sops
       ];
       common = { inherit pkgs inputs extraArgs homeManagerModuleList system; };
     in
