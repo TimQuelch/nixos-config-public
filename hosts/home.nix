@@ -21,6 +21,9 @@
       (pkgs.nerdfonts.override { fonts = [ "NerdFontsSymbolsOnly" ]; })
       iosevka
       yubikey-manager
+      duf
+      dust
+      ncdu
     ];
   };
   fonts.fontconfig.enable = true;
