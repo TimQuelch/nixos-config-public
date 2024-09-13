@@ -24,7 +24,11 @@
       duf
       dust
       ncdu
+      sops
     ];
+    sessionVariables = {
+      EDITOR = "vim";
+    };
   };
   fonts.fontconfig.enable = true;
 

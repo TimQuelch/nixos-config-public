@@ -12,6 +12,10 @@
     '';
   };
 
+  # Setup secrets
+  sops.defaultSopsFile = ../secrets/secrets.yaml;
+  sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
+
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -53,10 +57,11 @@
     pulse.enable = true;
   };
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
+  sops.secrets.user_password.neededForUsers = true;
   users.users.${user} = {
     isNormalUser = true;
     extraGroups = [ "wheel" "networkmanager" ]; # Enable ‘sudo’ for the user.
+    hashedPasswordFile = config.sops.secrets.user_password.path;
     shell = pkgs.zsh;
   };
 

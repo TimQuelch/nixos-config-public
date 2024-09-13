@@ -27,6 +27,7 @@ let
             };
           };
         }
+        inputs.sops-nix.nixosModules.sops
       ];
     };
   mkHomeManagerConfig = { pkgs, extraArgs, homeManagerModuleList, ... }:
