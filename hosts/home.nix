@@ -39,6 +39,7 @@
       dust
       ncdu
       sops
+      magic-wormhole
       age
     ];
     sessionVariables = {
