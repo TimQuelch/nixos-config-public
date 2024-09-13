@@ -1,4 +1,6 @@
-{ pkgs, ... }:
-with pkgs; {
-  fzf-tab-completion = callPackage ./fzf-tab-completion {};
+final: prev:
+{
+  custom = {
+    fzf-tab-completion = prev.callPackage ./fzf-tab-completion {};
+  };
 }

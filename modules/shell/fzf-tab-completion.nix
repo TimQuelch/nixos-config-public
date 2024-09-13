@@ -1,6 +1,5 @@
-{ lib, config, pkgs, self, system, options, ... }:
+{ lib, config, pkgs, options, ... }:
 let
-  mypkgs = self.packages.${system};
   cfg = config.modules.shell.fzf-tab-completion;
 in {
   options.modules.shell.fzf-tab-completion = {
@@ -14,10 +13,11 @@ in {
       gnugrep
       gnused
       coreutils
+      custom.fzf-tab-completion
     ];
 
     programs.zsh.initExtra = ''
-      source ${mypkgs.fzf-tab-completion}/zsh/fzf-zsh-completion.sh
+      source ${pkgs.custom.fzf-tab-completion}/zsh/fzf-zsh-completion.sh
     '';
   };
 }

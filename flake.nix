@@ -7,37 +7,20 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = inputs@{ nixpkgs, home-manager, ... }:
+  outputs = inputs@{ nixpkgs, ... }:
   let
-    systems = [
-      "aarch64-linux"
-      "i686-linux"
-      "x86_64-linux"
-      "aarch64-darwin"
-      "x86_64-darwin"
+    hosts = [
+      { name = "epsilon"; hardware = "laptop"; system = "x86_64-linux"; }
     ];
-    forAllSystems = nixpkgs.lib.genAttrs systems;
-  in {
-    nixosConfigurations = {
-      epsilon = let system = "x86_64-linux"; in nixpkgs.lib.nixosSystem {
-        inherit system;
-        modules = [
-          ./configuration.nix
-          home-manager.nixosModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.backupFileExtension = "backup";
-            home-manager.users.timquelch = import ./home.nix;
-
-            home-manager.extraSpecialArgs = { inherit (inputs) self; inherit system; };
-
-            # Optionally, use home-manager.extraSpecialArgs to pass
-            # arguments to home.nix
-          }
-        ];
-      };
+    # systems = nixpkgs.lib.unique (map (h: h.system) hosts);
+    # forAllSystems = nixpkgs.lib.genAttrs systems;
+    common = {
+      inherit hosts nixpkgs inputs;
     };
-    packages = forAllSystems (system: import ./pkgs nixpkgs.legacyPackages.${system});
+  in {
+    nixosConfigurations = import ./hosts ( common // {
+      isNixOs = true;
+    });
+    # packages = forAllSystems (system: import ./pkgs nixpkgs.legacyPackages.${system});
   };
 }

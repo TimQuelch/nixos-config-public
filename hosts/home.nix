@@ -1,14 +1,9 @@
-{ config, pkgs, self, system, ... }:
-let
-  mypkgs = self.packages.${system};
-in
+{ config, pkgs, system, ... }:
 {
   imports = [
-    ./modules/shell/zsh.nix
-    ./modules/shell/fzf-tab-completion.nix
+    ../modules/shell/zsh.nix
+    ../modules/shell/fzf-tab-completion.nix
   ];
-
-  home.stateVersion = "24.05";
 
   home = {
     username = "timquelch";
@@ -24,6 +19,8 @@ in
       fzf
       bitwarden
       (pkgs.nerdfonts.override { fonts = [ "NerdFontsSymbolsOnly" ]; })
+      iosevka
+      yubikey-manager
     ];
   };
   fonts.fontconfig.enable = true;
