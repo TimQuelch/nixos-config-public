@@ -1,5 +1,9 @@
 { config, lib, pkgs, hostname, user, ... }:
 {
+  imports = [
+    ../modules/os/zswap.nix
+  ];
+
   # Enable flakes
   nix = {
     package = pkgs.nixFlakes;
@@ -51,4 +55,6 @@
   environment.systemPackages = with pkgs; [
     vim
   ];
+
+  modules.os.zswap.enable = true;
 }
