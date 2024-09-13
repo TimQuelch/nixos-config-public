@@ -1,4 +1,4 @@
-{ config, pkgs, system, ... }:
+{ config, pkgs, system, user, ... }:
 {
   imports = [
     ../modules/shell/zsh.nix
@@ -6,8 +6,8 @@
   ];
 
   home = {
-    username = "timquelch";
-    homeDirectory = "/home/timquelch";
+    username = user;
+    homeDirectory = "/home/${user}";
     packages = with pkgs; [
       firefox
       git
@@ -24,7 +24,6 @@
     ];
   };
   fonts.fontconfig.enable = true;
-
 
   wayland.windowManager.hyprland.enable = false;
   wayland.windowManager.hyprland.settings = {
