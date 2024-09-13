@@ -21,8 +21,19 @@
   networking.networkmanager.enable = true;
   services.tailscale.enable = true;
 
-  networking.firewall.enable = true;
   networking.nftables.enable = true;
+  networking.firewall = {
+    enable = true;
+    allowedTCPPorts = [ 22 ];
+  };
+
+  services.openssh = {
+    enable = true;
+    settings = {
+      PasswordAuthentication = false;
+      PermitRootLogin = "no";
+    };
+  };
 
   # Misc config
   time.timeZone = "Australia/Melbourne";
