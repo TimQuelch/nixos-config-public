@@ -28,6 +28,7 @@ let
           };
         }
         inputs.sops-nix.nixosModules.sops
+        ../modules/os
       ];
     };
   mkHomeManagerConfig = { pkgs, extraArgs, homeManagerModuleList, ... }:
@@ -44,6 +45,7 @@ let
         ./home.nix
         ./${name}/home.nix
         inputs.sops-nix.homeManagerModules.sops
+        ../modules/home
       ];
       common = { inherit pkgs inputs extraArgs homeManagerModuleList system; };
     in

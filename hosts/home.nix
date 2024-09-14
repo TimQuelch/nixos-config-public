@@ -1,10 +1,5 @@
 { config, pkgs, user, ... }:
 {
-  imports = [
-    ../modules/shell/zsh.nix
-    ../modules/shell/fzf-tab-completion.nix
-  ];
-
   # Setup secrets
   sops = {
     defaultSopsFile = ../secrets/secrets.yaml;

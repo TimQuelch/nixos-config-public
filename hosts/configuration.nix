@@ -1,9 +1,5 @@
 { config, lib, pkgs, hostname, user, ... }:
 {
-  imports = [
-    ../modules/os/zswap.nix
-  ];
-
   # Enable flakes
   nix = {
     package = pkgs.nixFlakes;
