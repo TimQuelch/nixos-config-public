@@ -29,6 +29,7 @@
       sops
       magic-wormhole
       age
+      sqlite
     ];
     sessionVariables = {
       EDITOR = "vim";
