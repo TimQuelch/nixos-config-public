@@ -1,4 +1,4 @@
 { ... }:
 {
-  imports = [ ./shell ./ssh.nix ];
+  imports = [ ./shell ./ssh.nix ./hyprland.nix ];
 }
