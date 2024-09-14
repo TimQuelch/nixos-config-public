@@ -74,5 +74,12 @@
     vim
   ];
 
+  documentation.man =  {
+    man-db.enable = true;
+    generateCaches = true;
+  };
+
+  services.locate.enable = true;
+
   modules.os.zswap.enable = true;
 }
