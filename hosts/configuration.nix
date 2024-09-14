@@ -3,9 +3,15 @@
   # Enable flakes
   nix = {
     package = pkgs.nixFlakes;
-    extraOptions = ''
-      experimental-features = nix-command flakes
-    '';
+    settings = {
+      experimental-features = ["nix-command" "flakes"];
+      use-xdg-base-directories = true;
+    };
+    gc = {
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than=7d";
+    };
   };
 
   # Setup secrets
