@@ -69,6 +69,30 @@
     enable = true;
     userEmail = "tim@tquelch.com";
     userName = "Tim Quelch";
+    aliases = {
+      graph = "log --oneline --all --decorate --graph";
+    };
+    extraConfig = {
+      push = {
+        default =  "current";
+        autoSetupRemote = true;
+      };
+      merge = {
+        ff = false;
+      };
+      pull = {
+        ff = "only";
+      };
+      init = {
+        defaultBranch = "main";
+      };
+      url = {
+        "ssh://git@github.com/" = {
+          insteadOf = "https://github.com";
+        };
+      };
+    };
+    delta.enable = true;
   };
 
   modules.shell.zsh.enable = true;
