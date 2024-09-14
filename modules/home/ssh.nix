@@ -46,22 +46,4 @@ in {
 
     services.ssh-agent.enable = true;
   };
-
-
-  # config = mkIf cfg.enable {
-  #   programs.ssh.enable = true;
-  #   programs.ssh.addKeysToAgent = true;
-
-  #   services.ssh-agent.enable = true;
-
-  #   # programs.ssh = mkIf cfg.addCommonKeys {
-  #   #   sops.secrets = {
-  #   #     "ssh_auth_keys/primary_github" = {};
-  #   #     "ssh_auth_keys/primary_github.pub" = {};
-  #   #     "ssh_auth_keys/client_github" = {};
-  #   #     "ssh_auth_keys/client_github.pub" = {};
-  #   #   };
-  #   # };
-  # };
-
 }
