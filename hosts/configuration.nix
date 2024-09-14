@@ -23,13 +23,19 @@
   # Set up networking
   networking.hostName = hostname;
   networking.networkmanager.enable = true;
+
   services.tailscale.enable = true;
 
   networking.nftables.enable = true;
   networking.firewall = {
     enable = true;
     allowedTCPPorts = [ 22 ];
+
+    # Tailscale routing rules don't work correctly if reverse path checking is enabled.
+    checkReversePath = lib.mkIf config.services.tailscale.enable "loose";
   };
+
+  services.resolved.enable = true;
 
   services.openssh = {
     enable = true;
