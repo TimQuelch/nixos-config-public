@@ -1,4 +1,4 @@
-{ isNixOs, hosts, nixpkgs, inputs }:
+{ nixpkgs, inputs }:
 let
   configurePkgs = system: import nixpkgs {
     inherit system;
@@ -37,7 +37,7 @@ let
       extraSpecialArgs = extraArgs;
       modules = homeManagerModuleList;
     };
-  mkHost = args@{ name, hostname, system, user, inputs, ... }:
+  mkHost = mk: args@{ name, hostname, system, user, inputs, ... }:
     let
       pkgs = configurePkgs system;
       extraArgs = { inherit pkgs inputs user hostname; };
@@ -49,17 +49,19 @@ let
       ];
       common = { inherit pkgs inputs extraArgs homeManagerModuleList system; };
     in
-    if isNixOs then
-      mkNixOsConfig (args // common)
-    else
-      mkHomeManagerConfig (args // common);
+      mk (args // common);
+  mkHosts = mk: hosts:
+    builtins.listToAttrs (
+      map (args@{ name, ... }:
+        let
+          hostname = if builtins.hasAttr "hostname" args then args.hostname else name;
+          user = if builtins.hasAttr "user" args then args.user else "timquelch";
+        in
+        { name = hostname; value = mkHost mk (args // { inherit hostname user inputs; }); })
+      hosts
+    );
 in
-builtins.listToAttrs (
-  map (args@{ name, ... }:
-    let
-      hostname = if builtins.hasAttr "hostname" args then args.hostname else name;
-      user = if builtins.hasAttr "user" args then args.user else "timquelch";
-    in
-    { name = hostname; value = mkHost (args // { inherit hostname user inputs; }); })
-  hosts
-)
+{
+  mkNixOsHosts = mkHosts mkNixOsConfig;
+  mkHomeManagerHosts = mkHosts mkHomeManagerConfig;
+}

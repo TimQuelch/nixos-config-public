@@ -11,16 +11,19 @@
 
   outputs = inputs@{ nixpkgs, ... }:
   let
+    # List of hosts to generate
+    # `name` specifies which configuration to lookup
+    # `hostname` defaults to name if not specified. lookup from env if we don't care
+    # `hardware` specifies which hardware_configuration to lookup. ignored for home-manager
     hosts = [
       { name = "epsilon"; hardware = "laptop"; system = "x86_64-linux"; }
     ];
-    common = { inherit hosts nixpkgs inputs; };
+    nixOsFilter = nixpkgs.lib.filter (h: builtins.hasAttr "hardware" h);
+    mkHosts = import ./hosts { inherit nixpkgs inputs; };
   in {
-    nixosConfigurations = import ./hosts (common // {
-      isNixOs = true;
-    });
-    homeConfigurations = import ./hosts (common // {
-      isNixOS = false;
-    });
+    # Make nixos configs for only hosts that have hardware associated
+    nixosConfigurations = mkHosts.mkNixOsHosts (nixOsFilter hosts);
+    # Make home-manager configs for all hosts
+    homeConfigurations = mkHosts.mkHomeManagerHosts hosts;
   };
 }
