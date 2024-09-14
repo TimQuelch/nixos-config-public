@@ -13,11 +13,9 @@ in {
         enable = true;
         theme = "intheloop";
         plugins = [
-        "colored-man-pages"
-        "fd"
-        "fzf"
-        "ripgrep"
-        "sudo"
+          "colored-man-pages"
+          "fzf"
+          "sudo"
         ];
       };
       history = {
