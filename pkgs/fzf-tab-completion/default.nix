@@ -1,8 +1,8 @@
-{ stdenv, fetchFromGitHub }:
+{ stdenv, fetchFromGitHub, system }:
 stdenv.mkDerivation {
   name = "fzf-tab-completion";
   version = "1112259";
-  system = builtins.currentSystem;
+  system = system;
 
   src = fetchFromGitHub {
     owner = "lincheney";
