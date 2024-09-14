@@ -1,4 +1,4 @@
 { ... }:
 {
-  imports = [ ./shell ];
+  imports = [ ./shell ./ssh.nix ];
 }

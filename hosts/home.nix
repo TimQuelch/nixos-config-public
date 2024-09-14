@@ -7,13 +7,6 @@
     age.generateKey = true;
   };
 
-  sops.secrets = {
-    "ssh_auth_keys/primary_github" = {};
-    "ssh_auth_keys/primary_github.pub" = {};
-    "ssh_auth_keys/client_github" = {};
-    "ssh_auth_keys/client_github.pub" = {};
-  };
-
   home = {
     username = user;
     homeDirectory = "/home/${user}";
@@ -80,4 +73,5 @@
 
   modules.shell.zsh.enable = true;
   modules.shell.fzf-tab-completion.enable = true;
+  modules.ssh.enable = true;
 }
