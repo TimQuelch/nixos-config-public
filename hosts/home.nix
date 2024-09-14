@@ -2,7 +2,7 @@
 {
   # Setup secrets
   sops = {
-    defaultSopsFile = ../secrets/secrets.yaml;
+    defaultSopsFile = ../secrets/user-secrets.yaml;
     age.keyFile = "${config.xdg.configHome}/sops/age/sops-nix.txt";
     age.generateKey = true;
   };
