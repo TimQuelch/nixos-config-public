@@ -1,4 +1,4 @@
-{ config, pkgs, system, user, ... }:
+{ config, pkgs, user, ... }:
 {
   imports = [
     ../modules/shell/zsh.nix
