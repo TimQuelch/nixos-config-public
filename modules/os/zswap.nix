@@ -15,8 +15,8 @@ in {
       serviceConfig = {
         ExecStart = ''${pkgs.bash}/bin/bash -c \
           'cd /sys/module/zswap/parameters && \
-          echo 1 > enabled&& \
-          echo zstd > compressor&& \
+          echo 1 > enabled && \
+          echo zstd > compressor && \
           echo z3fold > zpool'
         '';
         Type = "oneshot";
