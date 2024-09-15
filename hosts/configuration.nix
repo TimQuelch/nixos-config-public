@@ -56,7 +56,7 @@
   services.xserver.enable = true;
   services.desktopManager.plasma6.enable = true;
   services.displayManager.sddm.enable = true;
-  programs.hyprland.enable = false;
+  programs.hyprland.enable = true;
 
   # Configure audio
   services.pipewire = {
@@ -87,4 +87,8 @@
   services.locate.enable = true;
 
   modules.os.zswap.enable = true;
+
+  # This is an annoying mix between home and non-home
+  security.pam.services.hyprlock = {}   ;
+  environment.pathsToLink = [ "/share/xdg-desktop-portal" "/share/applications" ] ;
 }
