@@ -36,6 +36,7 @@
     checkReversePath = lib.mkIf config.services.tailscale.enable "loose";
   };
 
+  networking.nameservers = [ "192.168.20.99" ]  ;
   services.resolved.enable = true;
 
   services.openssh = {
