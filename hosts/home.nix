@@ -76,6 +76,5 @@
   };
 
   modules.shell.zsh.enable = true;
-  modules.shell.fzf-tab-completion.enable = true;
   modules.ssh.enable = true;
 }
