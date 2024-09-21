@@ -26,9 +26,7 @@
       duf
       dust
       ncdu
-      sops
       magic-wormhole
-      age
       sqlite
     ];
     sessionVariables = {

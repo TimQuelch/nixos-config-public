@@ -38,7 +38,9 @@
           # Make home-manager configs for all hosts
           homeConfigurations = mkHosts.mkHomeManagerHosts hosts;
         };
-        # devShells = pkgs.mkShell {};
+        devShells.default = pkgs.mkShell {
+          packages = with pkgs; [ sops age ];
+        };
       }
     );
 }
