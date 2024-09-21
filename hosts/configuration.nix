@@ -25,11 +25,13 @@
   # Set up networking
   networking.hostName = hostname;
 
-  services.tailscale = {
-    enable = true;
+  sops.secrets.tailscale_auth_key = {};
+  services.tailscale =  {
+    enable = true ;
     openFirewall = true;
     useRoutingFeatures = "client";
-    extraSetFlags = [
+    authKeyFile = config.sops.secrets.tailscale_auth_key.path;
+    extraUpFlags = [
       "--ssh"
       "--accept-dns"
       "--accept-routes"
