@@ -76,5 +76,6 @@
   };
 
   modules.shell.zsh.enable = true;
+  modules.shell.direnv.enable = true;
   modules.ssh.enable = true;
 }
