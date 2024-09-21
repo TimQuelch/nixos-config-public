@@ -1,15 +1,6 @@
-{ nixpkgs, inputs }:
+{ nixpkgs, pkgs, inputs, system }:
 let
-  configurePkgs = system: import nixpkgs {
-    inherit system;
-    config = {
-      allowUnfree = true;
-    };
-    overlays = [
-      (import ../pkgs)
-    ];
-  };
-  mkNixOsConfig = {system, extraArgs, name, hardware, user, homeManagerModuleList, ...}:
+  mkNixOsConfig = { extraArgs, name, hardware, user, homeManagerModuleList, ...}:
     nixpkgs.lib.nixosSystem {
       inherit system;
       specialArgs = extraArgs;
@@ -31,15 +22,14 @@ let
         ../modules/os
       ];
     };
-  mkHomeManagerConfig = { pkgs, extraArgs, homeManagerModuleList, ... }:
+  mkHomeManagerConfig = { extraArgs, homeManagerModuleList, ... }:
     inputs.home-manager.lib.homeManagerConfiguration {
       inherit pkgs;
       extraSpecialArgs = extraArgs;
       modules = homeManagerModuleList;
     };
-  mkHost = mk: args@{ name, hostname, system, user, inputs, ... }:
+  mkHost = mk: args@{ name, hostname, user, ... }:
     let
-      pkgs = configurePkgs system;
       extraArgs = { inherit pkgs inputs user hostname; };
       homeManagerModuleList = [
         ./home.nix
@@ -47,7 +37,7 @@ let
         inputs.sops-nix.homeManagerModules.sops
         ../modules/home
       ];
-      common = { inherit pkgs inputs extraArgs homeManagerModuleList system; };
+      common = { inherit extraArgs homeManagerModuleList; };
     in
       mk (args // common);
   mkHosts = mk: hosts:
@@ -57,7 +47,7 @@ let
           hostname = if builtins.hasAttr "hostname" args then args.hostname else name;
           user = if builtins.hasAttr "user" args then args.user else "timquelch";
         in
-        { name = hostname; value = mkHost mk (args // { inherit hostname user inputs; }); })
+        { name = hostname; value = mkHost mk (args // { inherit hostname user; }); })
       hosts
     );
 in
