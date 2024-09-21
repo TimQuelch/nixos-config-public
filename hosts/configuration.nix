@@ -68,7 +68,7 @@
   sops.secrets.user_password.neededForUsers = true;
   users.users.${user} = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" ]; # Enable ‘sudo’ for the user.
+    extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
     hashedPasswordFile = config.sops.secrets.user_password.path;
     shell = pkgs.zsh;
   };
