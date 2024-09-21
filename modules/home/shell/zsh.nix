@@ -1,4 +1,4 @@
-{ lib, config, options, ... }:
+{ lib, pkgs, config, options, ... }:
 let
   cfg = config.modules.shell.zsh;
 in {
@@ -9,15 +9,10 @@ in {
   config = lib.mkIf cfg.enable {
     programs.zsh = {
       enable = true;
-      oh-my-zsh = {
-        enable = true;
-        theme = "intheloop";
-        plugins = [
-          "colored-man-pages"
-          "fzf"
-          "sudo"
-        ];
-      };
+      initExtra = ''
+        source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
+        source ${./p10k.zsh}
+      '';
       history = {
         ignoreDups = true;
         ignoreSpace = true;
