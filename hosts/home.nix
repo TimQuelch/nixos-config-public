@@ -37,7 +37,7 @@
 
   programs.emacs = {
     enable = true;
-    package = pkgs.emacs-gtk;
+    package = pkgs.emacs;
   };
   services.emacs.client.enable = true;
 
