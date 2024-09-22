@@ -1,10 +1,11 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 {
   home.packages = with pkgs; [
     firefox
     wofi
     polkit-kde-agent
     xwaylandvideobridge
+    nwg-displays
   ];
 
   wayland.windowManager.hyprland.settings = {
@@ -55,6 +56,10 @@
       "maxsize 1 1, class:^(xwaylandvideobridge)$"
       "noblur, class:^(xwaylandvideobridge)$"
     ];
+    xwayland = {
+      force_zero_scaling = true;
+    };
+    source = "${config.xdg.configHome}/hypr/monitors.conf";
   };
 
   programs.waybar.enable = true;
