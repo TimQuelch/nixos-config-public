@@ -16,6 +16,9 @@
     bind = [
       # Control
       "$mod, Q, killactive"
+      "$mod, V, togglefloating"
+      "$mod, P, pseudo"
+      "$mod, J, togglesplit"
       "$mod, H, movefocus, l"
       "$mod, L, movefocus, r"
       "$mod, J, movefocus, d"
@@ -26,8 +29,9 @@
       "$mod SHIFT, S, movetoworkspace, special:magic"
 
       # Programs
-      "$mod, F, exec, firefox"
+      "$mod, C, exec, firefox"
       "$mod, R, exec, wofi --show drun"
+      "$mod, RETURN, exec, kitty"
       "$mod, T, exec, kitty"
     ]
     ++ (
