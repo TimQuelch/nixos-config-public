@@ -28,26 +28,22 @@ let
       extraSpecialArgs = extraArgs;
       modules = homeManagerModuleList;
     };
-  mkHost = mk: args@{ name, hostname, user, ... }:
-    let
-      extraArgs = { inherit pkgs inputs user hostname; };
-      homeManagerModuleList = [
-        ./home.nix
-        ./${name}/home.nix
-        inputs.sops-nix.homeManagerModules.sops
-        ../modules/home
-      ];
-      common = { inherit extraArgs homeManagerModuleList; };
-    in
-      mk (args // common);
-  mkHosts = mk: hosts:
+  mkHosts = mkHost: hosts:
     builtins.listToAttrs (
       map (args@{ name, ... }:
         let
           hostname = if builtins.hasAttr "hostname" args then args.hostname else name;
           user = if builtins.hasAttr "user" args then args.user else "timquelch";
+          extraArgs = { inherit pkgs inputs user hostname; };
+          homeManagerModuleList = [
+            ./home.nix
+            ./${name}/home.nix
+            inputs.sops-nix.homeManagerModules.sops
+            ../modules/home
+          ];
+          common = { inherit user hostname extraArgs homeManagerModuleList; };
         in
-        { name = hostname; value = mkHost mk (args // { inherit hostname user; }); })
+        { name = hostname; value = mkHost (args // common); })
       hosts
     );
 in
