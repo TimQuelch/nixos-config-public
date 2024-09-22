@@ -146,5 +146,6 @@ in {
   services.mako.enable = true;
 
   xdg.portal.enable = true;
-  xdg.portal.extraPortals = [ pkgs  .xdg-desktop-portal-hyprland ];
+  xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-hyprland ];
+  xdg.portal.configPackages = [ pkgs.xdg-desktop-portal-hyprland ];
 }
