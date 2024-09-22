@@ -72,6 +72,71 @@
   };
 
   programs.waybar.enable = true;
+  programs.waybar.settings.mainBar = {
+    height = 40;
+    font-size = "16px";
+    modules-left = [ "hyprland/workspaces" ];
+    modules-center = [ "hyprland/window" ];
+    modules-right = [
+      "network"
+      "cpu"
+      "memory"
+      "battery"
+      "clock"
+      "tray"
+    ];
+    network = {
+      format-wifi = "{essid} ({signalStrength}%) ";
+      format-ethernet = "{ipaddr}/{cidr} 󰈁";
+      format-linked = "{ifname} (No IP) 󰈂";
+      format-disconnected = "Disconnected 󰀦";
+    };
+    cpu = {
+      format = "{usage}% ";
+      tooltip = false;
+    };
+    memory = {
+      format = "{}% ";
+      tooltip = false;
+    };
+    battery = {
+      states = {
+        good = 95;
+        warning = 30;
+        critical = 15;
+      };
+      format = "{capacity}% {icon}";
+      format-alt = "{time} {icon}";
+      format-good = "";
+      format-full = "";
+      format-icons = ["" "" "" "" ""];
+    };
+    clock = {
+      format = "{:%a %Y-%m-%d %H:%M %Z}";
+    };
+    "hyprland/workspaces" = {
+      format = "{icon} {windows}";
+      window-rewrite-default = "";
+      window-rewrite = {
+        "class<firefox>" = "";
+        "kitty" = "";
+        "code" = "󰨞";
+        "emacs" = "";
+      };
+    };
+    "hyprland/window" = {
+      rewrite = {
+        "(.*) — Mozilla Firefox" = " $1";
+        "(.*) – Doom Emacs" = " $1";
+      };
+    };
+  };
+  programs.waybar.style = ''
+    * {
+      font-size: 18px;
+    }
+  '';
+
   programs.hyprlock.enable = true;
 
   # services. hyprpaper.enable = true;
