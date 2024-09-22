@@ -64,6 +64,11 @@
       force_zero_scaling = true;
     };
     source = "${config.xdg.configHome}/hypr/monitors.conf";
+    animation = [
+      "windows, 1, 2, default, popin"
+      "workspaces, 1, 3, default, slide"
+      "specialWorkspace, 1, 2, default, slidefadevert"
+    ];
   };
 
   programs.waybar.enable = true;
