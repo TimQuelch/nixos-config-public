@@ -28,6 +28,7 @@
       ncdu
       magic-wormhole
       sqlite
+      cmake                     # needed for emacs to compile vterm
     ];
     sessionVariables = {
       EDITOR = "vim";
