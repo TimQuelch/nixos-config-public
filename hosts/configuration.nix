@@ -34,7 +34,6 @@
     useRoutingFeatures = "client";
     authKeyFile = config.sops.secrets.tailscale_auth_key.path;
     extraUpFlags = [
-      "--ssh"
       "--accept-dns"
       "--accept-routes"
     ];
