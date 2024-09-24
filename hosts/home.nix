@@ -16,6 +16,7 @@
       vim
       ripgrep
       fd
+      jq
       kitty
       htop
       fzf
@@ -29,6 +30,7 @@
       magic-wormhole
       sqlite
       cmake                     # needed for emacs to compile vterm
+      sops                      # needed for emacs sops mode    
     ];
     sessionVariables = {
       EDITOR = "vim";
