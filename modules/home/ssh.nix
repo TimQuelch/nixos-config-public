@@ -31,7 +31,8 @@ in {
             identityFile = config.sops.secrets."ssh_auth_keys/primary_github".path;
           };
           "theta-boot" = lib.hm.dag.entryBefore ["default"] {
-            host = "192.168.20.99";
+            host = "theta-boot";
+            hostname = "192.168.20.99";
             user = "root";
             port = 123;
             identitiesOnly = true;
