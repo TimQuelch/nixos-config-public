@@ -30,6 +30,13 @@ in {
             identitiesOnly = true;
             identityFile = config.sops.secrets."ssh_auth_keys/primary_github".path;
           };
+          "theta-boot" = lib.hm.dag.entryBefore ["default"] {
+            host = "192.168.20.99";
+            user = "root";
+            port = 123;
+            identitiesOnly = true;
+            identityFile = config.sops.secrets."ssh_auth_keys/non_sk".path;
+          };
           "default" = {
             host = "*";
             identitiesOnly = true;
@@ -39,9 +46,19 @@ in {
       );
     };
 
-    sops.secrets = builtins.listToAttrs (lib.mapCartesianProduct
-      ({ name, suf }: {name = "ssh_auth_keys/${name}${suf}"; value={};})
-      { name = github-keys ++ [ "primary" ]; suf = ["" ".pub"];  }
+    sops.secrets = (
+      builtins.listToAttrs (lib.mapCartesianProduct
+        ({ name, suf }: {name = "ssh_auth_keys/${name}${suf}"; value={};})
+        { name = github-keys; suf = ["" ".pub"];  }
+      )
+      //
+      builtins.listToAttrs (lib.mapCartesianProduct
+        ({ name, suf }: {
+          name = "ssh_auth_keys/${name}${suf}";
+          value.path = "${config.home.homeDirectory}/.ssh/${name}${suf}";
+        })
+        { name = [ "primary" "non_sk" ]; suf = ["" ".pub"];  }
+      )
     );
 
     services.ssh-agent.enable = true;
