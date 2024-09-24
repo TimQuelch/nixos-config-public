@@ -18,6 +18,7 @@
         # `hostname` defaults to name if not specified. lookup from env if we don't care
         # `hardware` specifies which hardware_configuration to lookup. ignored for home-manager
         hosts = [
+          { name = "alpha"; hardware = "desktop"; }
           { name = "epsilon"; hardware = "laptop"; }
         ];
         pkgs = import nixpkgs {
