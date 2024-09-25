@@ -36,14 +36,35 @@ in {
 
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
-      git
-      fd
-      findutils
-      ripgrep
-      fzf
+      # for native comp
+      binutils
+
+      # fonts
       iosevka
-      sops    # sops global mode
-      cmake   # to compile vterm
+      (pkgs.nerdfonts.override { fonts = [ "NerdFontsSymbolsOnly" ]; })
+
+      # doom
+      git
+      ripgrep
+      gnutls
+      fd
+      imagemagick
+      zstd
+
+      # spell check
+      (aspellWithDicts (ds: with ds; [ en en-computers en-science ]))
+
+      # org roam and lookup
+      sqlite
+
+      # to compile vterm
+      cmake
+
+      # SOPs/Age
+      age
+      sops
+
+      # My helpers
       doom-bin
       init-emacs-config-bin
     ];

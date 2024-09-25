@@ -21,7 +21,6 @@
       htop
       fzf
       bitwarden
-      (pkgs.nerdfonts.override { fonts = [ "NerdFontsSymbolsOnly" ]; })
       iosevka
       yubikey-manager
       duf
