@@ -29,20 +29,12 @@
       ncdu
       magic-wormhole
       sqlite
-      cmake                     # needed for emacs to compile vterm
-      sops                      # needed for emacs sops mode    
     ];
     sessionVariables = {
       EDITOR = "vim";
     };
   };
   fonts.fontconfig.enable = true;
-
-  programs.emacs = {
-    enable = true;
-    package = pkgs.emacs;
-  };
-  services.emacs.client.enable = true;
 
   programs.home-manager.enable = true;
 
@@ -79,4 +71,5 @@
   modules.shell.zsh.enable = true;
   modules.shell.direnv.enable = true;
   modules.ssh.enable = true;
+  modules.emacs.enable = true;
 }
