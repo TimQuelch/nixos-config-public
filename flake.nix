@@ -26,9 +26,6 @@
           config = {
             allowUnfree = true;
           };
-          overlays = [
-            (import ./pkgs)
-          ];
         };
         nixOsFilter = pkgs.lib.filter (h: builtins.hasAttr "hardware" h);
         mkHosts = import ./hosts { inherit nixpkgs pkgs inputs system; };
