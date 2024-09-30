@@ -28,6 +28,7 @@
       ncdu
       magic-wormhole
       sqlite
+      julia
     ];
     sessionVariables = {
       EDITOR = "vim";
