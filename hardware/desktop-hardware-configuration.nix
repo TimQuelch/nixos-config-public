@@ -13,30 +13,19 @@
   boot.kernelModules = [ "kvm-amd" ];
   boot.extraModulePackages = [ ];
 
-  fileSystems."/" =
-    { device = "/dev/disk/by-uuid/b7a2bbc1-3226-4f11-aca7-5ddf71194a08";
-      fsType = "btrfs";
-      options = [ "subvol=@root" ];
-    };
+  boot.initrd.luks.devices."main".device = "/dev/disk/by-uuid/5e7aed93-c722-4c97-b222-64cf0128598f";
 
-  boot.initrd.luks.devices."root".device = "/dev/disk/by-uuid/5e7aed93-c722-4c97-b222-64cf0128598f";
-
-  fileSystems."/swap" =
-    { device = "/dev/disk/by-uuid/b7a2bbc1-3226-4f11-aca7-5ddf71194a08";
+  fileSystems = lib.mapAttrs
+    (path: options: {
+      device = "/dev/mapper/main";
       fsType = "btrfs";
-      options = [ "subvol=@swap" ];
-    };
-
-  fileSystems."/home" =
-    { device = "/dev/disk/by-uuid/b7a2bbc1-3226-4f11-aca7-5ddf71194a08";
-      fsType = "btrfs";
-      options = [ "subvol=@home" ];
-    };
-
-  fileSystems."/nix" =
-    { device = "/dev/disk/by-uuid/b7a2bbc1-3226-4f11-aca7-5ddf71194a08";
-      fsType = "btrfs";
-      options = [ "subvol=@nix" ];
+      options = options;
+    })
+    {
+      "/"     = [ "subvol=@root" "compress=zstd" ];
+      "/nix"  = [ "subvol=@nix"  "compress=zstd" "noatime" ];
+      "/home" = [ "subvol=@home" "compress=zstd" ];
+      "/swap" = [ "subvol=@swap" "noatime" ];
     };
 
   swapDevices = [
