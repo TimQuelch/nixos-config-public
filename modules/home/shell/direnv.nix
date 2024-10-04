@@ -21,7 +21,7 @@ in {
                 echo "${config.xdg.cacheHome}/direnv/layouts/''${hash}''${path}"
             )}"
         }
-      ''  ;
+      '';
     };
   };
 }
