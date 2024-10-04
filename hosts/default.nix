@@ -39,6 +39,7 @@ let
             ./home.nix
             ./${name}/home.nix
             inputs.sops-nix.homeManagerModules.sops
+            inputs.nix-index-database.hmModules.nix-index
             ../modules/home
           ];
           common = { inherit user hostname extraArgs homeManagerModuleList; };
