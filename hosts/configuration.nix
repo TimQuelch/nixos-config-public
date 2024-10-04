@@ -76,7 +76,10 @@
   sops.secrets.user_password.neededForUsers = true;
   users.users.${user} = {
     isNormalUser = true;
-    extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
+    extraGroups = (
+      [ "wheel" ]
+      ++
+      (if config.virtualisation.docker.enable then [ "docker" ] else []));
     hashedPasswordFile = config.sops.secrets.user_password.path;
     shell = pkgs.zsh;
   };
@@ -96,6 +99,8 @@
   services.locate.enable = true;
 
   modules.os.zswap.enable = true;
+
+  virtualisation.docker.enable = true;
 
   # This is an annoying mix between home and non-home
   security.pam.services.hyprlock = {}   ;
