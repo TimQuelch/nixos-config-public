@@ -1,1 +1,1 @@
-{ ... }: { imports = [ ./zswap.nix ]; }
+{ ... }: { imports = [ ./zswap.nix ./nixos-options.nix ]; }

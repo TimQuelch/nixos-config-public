@@ -91,6 +91,7 @@
   services.locate.enable = true;
 
   modules.os.zswap.enable = true;
+  modules.os.nixos-options.enable = true;
 
   virtualisation.docker.enable = true;
 
