@@ -1,5 +1,4 @@
-{ config, lib, pkgs, ... }:
-{
+{ config, lib, pkgs, ... }: {
   hardware.nvidia = {
     modesetting.enable = true;
     open = false;
@@ -8,15 +7,11 @@
 
   services.libinput.mouse.accelProfile = "flat";
 
-  services.xserver.videoDrivers = ["nvidia"];
+  services.xserver.videoDrivers = [ "nvidia" ];
 
   networking.wireless.iwd = {
     enable = true;
-    settings = {
-      Settings = {
-        AutoConnect = true;
-      };
-    };
+    settings.Settings.AutoConnect = true;
   };
   networking.wireless.userControlled.enable = true;
 

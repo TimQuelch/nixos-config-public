@@ -1,12 +1,7 @@
-{ config, lib, pkgs, ... }:
-{
+{ config, lib, pkgs, ... }: {
   networking.wireless.iwd = {
     enable = true;
-    settings = {
-      Settings = {
-        AutoConnect = true;
-      };
-    };
+    settings = { Settings = { AutoConnect = true; }; };
   };
   networking.useDHCP = true;
   networking.wireless.userControlled.enable = true;

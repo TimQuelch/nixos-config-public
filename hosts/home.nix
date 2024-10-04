@@ -1,5 +1,4 @@
-{ config, pkgs, user, ... }:
-{
+{ config, pkgs, user, ... }: {
   # Setup secrets
   sops = {
     defaultSopsFile = ../secrets/user-secrets.yaml;
@@ -31,9 +30,7 @@
       julia
       dbeaver-bin
     ];
-    sessionVariables = {
-      EDITOR = "vim";
-    };
+    sessionVariables = { EDITOR = "vim"; };
   };
   fonts.fontconfig.enable = true;
 
@@ -43,23 +40,15 @@
     enable = true;
     userEmail = "tim@tquelch.com";
     userName = "Tim Quelch";
-    aliases = {
-      graph = "log --oneline --all --decorate --graph";
-    };
+    aliases = { graph = "log --oneline --all --decorate --graph"; };
     extraConfig = {
       push = {
-        default =  "current";
+        default = "current";
         autoSetupRemote = true;
       };
-      merge = {
-        ff = false;
-      };
-      pull = {
-        ff = "only";
-      };
-      init = {
-        defaultBranch = "main";
-      };
+      merge = { ff = false; };
+      pull = { ff = "only"; };
+      init = { defaultBranch = "main"; };
       # url = {
       #   "ssh://git@github.com:" = {
       #     insteadOf = "https://github.com/";

@@ -1,19 +1,10 @@
 { pkgs, config, ... }:
-let
-  nWorkspaces = 10;
+let nWorkspaces = 10;
 in {
-  home.packages = with pkgs; [
-    firefox
-    wofi
-    polkit-kde-agent
-    xwaylandvideobridge
-    nwg-displays
-  ];
+  home.packages = with pkgs; [ firefox wofi polkit-kde-agent xwaylandvideobridge nwg-displays ];
 
   wayland.windowManager.hyprland.settings = {
-    exec-once = [
-      "waybar"
-    ];
+    exec-once = [ "waybar" ];
     "$mod" = "SUPER";
     bind = [
       # Control
@@ -35,21 +26,12 @@ in {
       "$mod, R, exec, wofi --show drun"
       "$mod, RETURN, exec, kitty"
       "$mod, T, exec, kitty"
-    ]
-    ++ (
-      builtins.concatLists (builtins.genList (
-        x: let
-          ws = let
-            c = (x + 1) / nWorkspaces;
-          in
-            builtins.toString (x + 1 - (c * nWorkspaces));
-        in [
-          "$mod, ${ws}, workspace, ${toString (x + 1)}"
-          "$mod SHIFT, ${ws}, movetoworkspace, ${toString (x + 1)}"
-        ]
-      )
-      nWorkspaces)
-    );
+    ] ++ (builtins.concatLists (builtins.genList (x:
+      let ws = let c = (x + 1) / nWorkspaces; in builtins.toString (x + 1 - (c * nWorkspaces));
+      in [
+        "$mod, ${ws}, workspace, ${toString (x + 1)}"
+        "$mod SHIFT, ${ws}, movetoworkspace, ${toString (x + 1)}"
+      ]) nWorkspaces));
     bindm = [
       # LMB to move, RMB to resize
       "$mod, mouse:272, movewindow"
@@ -62,9 +44,7 @@ in {
       "maxsize 1 1, class:^(xwaylandvideobridge)$"
       "noblur, class:^(xwaylandvideobridge)$"
     ];
-    xwayland = {
-      force_zero_scaling = true;
-    };
+    xwayland = { force_zero_scaling = true; };
     source = "${config.xdg.configHome}/hypr/monitors.conf";
     animation = [
       "windows, 1, 2, default, popin"
@@ -79,14 +59,7 @@ in {
     font-size = "16px";
     modules-left = [ "hyprland/workspaces" ];
     modules-center = [ "hyprland/window" ];
-    modules-right = [
-      "network"
-      "cpu"
-      "memory"
-      "battery"
-      "clock"
-      "tray"
-    ];
+    modules-right = [ "network" "cpu" "memory" "battery" "clock" "tray" ];
     network = {
       format-wifi = "{essid} ({signalStrength}%) ";
       format-ethernet = "{ipaddr}/{cidr} 󰈁";
@@ -111,11 +84,9 @@ in {
       format-alt = "{time} {icon}";
       format-good = "";
       format-full = "";
-      format-icons = ["" "" "" "" ""];
+      format-icons = [ "" "" "" "" "" ];
     };
-    clock = {
-      format = "{:%a %Y-%m-%d %H:%M %Z}";
-    };
+    clock = { format = "{:%a %Y-%m-%d %H:%M %Z}"; };
     "hyprland/workspaces" = {
       format = "{icon} {windows}";
       window-rewrite-default = "";

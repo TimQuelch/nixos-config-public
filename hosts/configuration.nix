@@ -1,10 +1,9 @@
-{ config, lib, pkgs, hostname, user, ... }:
-{
+{ config, lib, pkgs, hostname, user, ... }: {
   # Enable flakes
   nix = {
     package = pkgs.nixFlakes;
     settings = {
-      experimental-features = ["nix-command" "flakes"];
+      experimental-features = [ "nix-command" "flakes" ];
       use-xdg-base-directories = true;
     };
     gc = {
@@ -27,16 +26,13 @@
   # Set up networking
   networking.hostName = hostname;
 
-  sops.secrets.tailscale_auth_key = {};
-  services.tailscale =  {
-    enable = true ;
+  sops.secrets.tailscale_auth_key = { };
+  services.tailscale = {
+    enable = true;
     openFirewall = true;
     useRoutingFeatures = "client";
     authKeyFile = config.sops.secrets.tailscale_auth_key.path;
-    extraUpFlags = [
-      "--accept-dns"
-      "--accept-routes"
-    ];
+    extraUpFlags = [ "--accept-dns" "--accept-routes" ];
   };
 
   networking.nftables.enable = true;
@@ -76,10 +72,8 @@
   sops.secrets.user_password.neededForUsers = true;
   users.users.${user} = {
     isNormalUser = true;
-    extraGroups = (
-      [ "wheel" ]
-      ++
-      (if config.virtualisation.docker.enable then [ "docker" ] else []));
+    extraGroups =
+      ([ "wheel" ] ++ (if config.virtualisation.docker.enable then [ "docker" ] else [ ]));
     hashedPasswordFile = config.sops.secrets.user_password.path;
     shell = pkgs.zsh;
   };
@@ -87,11 +81,9 @@
   programs.zsh.enable = true;
 
   # Defer nearly all packages to home manger configs
-  environment.systemPackages = with pkgs; [
-    vim
-  ];
+  environment.systemPackages = with pkgs; [ vim ];
 
-  documentation.man =  {
+  documentation.man = {
     man-db.enable = true;
     generateCaches = true;
   };
@@ -103,6 +95,6 @@
   virtualisation.docker.enable = true;
 
   # This is an annoying mix between home and non-home
-  security.pam.services.hyprlock = {}   ;
-  environment.pathsToLink = [ "/share/xdg-desktop-portal" "/share/applications" ] ;
+  security.pam.services.hyprlock = { };
+  environment.pathsToLink = [ "/share/xdg-desktop-portal" "/share/applications" ];
 }

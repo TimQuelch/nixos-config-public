@@ -30,9 +30,7 @@ let
 
   inherit (lib) mkEnableOption mkIf;
 in {
-  options.modules.emacs = {
-    enable = mkEnableOption "emacs";
-  };
+  options.modules.emacs = { enable = mkEnableOption "emacs"; };
 
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
@@ -63,6 +61,9 @@ in {
       # SOPs/Age
       age
       sops
+
+      # treemacs git
+      python3
 
       # My helpers
       doom-bin

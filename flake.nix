@@ -12,22 +12,26 @@
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = inputs@{ nixpkgs, flake-utils, ... }: flake-utils.lib.eachDefaultSystem (
-    system:
+  outputs = inputs@{ nixpkgs, flake-utils, ... }:
+    flake-utils.lib.eachDefaultSystem (system:
       let
         # List of hosts to generate
         # `name` specifies which configuration to lookup
         # `hostname` defaults to name if not specified. lookup from env if we don't care
         # `hardware` specifies which hardware_configuration to lookup. ignored for home-manager
         hosts = [
-          { name = "alpha"; hardware = "desktop"; }
-          { name = "epsilon"; hardware = "laptop"; }
+          {
+            name = "alpha";
+            hardware = "desktop";
+          }
+          {
+            name = "epsilon";
+            hardware = "laptop";
+          }
         ];
         pkgs = import nixpkgs {
           inherit system;
-          config = {
-            allowUnfree = true;
-          };
+          config = { allowUnfree = true; };
         };
         nixOsFilter = pkgs.lib.filter (h: builtins.hasAttr "hardware" h);
         mkHosts = import ./hosts { inherit nixpkgs pkgs inputs system; };
@@ -38,9 +42,6 @@
           # Make home-manager configs for all hosts
           homeConfigurations = mkHosts.mkHomeManagerHosts hosts;
         };
-        devShells.default = pkgs.mkShell {
-          packages = with pkgs; [ sops age ];
-        };
-      }
-    );
+        devShells.default = pkgs.mkShell { packages = with pkgs; [ sops age nixfmt ]; };
+      });
 }

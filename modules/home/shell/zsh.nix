@@ -22,7 +22,7 @@ in {
     programs.zsh = {
       enable = true;
       autocd = true;
-      dotDir = ".config/zsh";   # ideally this would be xdg.configHome but that gives an absolute path
+      dotDir = ".config/zsh"; # ideally this would be xdg.configHome but that gives an absolute path
       syntaxHighlighting.enable = true;
       plugins = [
         {

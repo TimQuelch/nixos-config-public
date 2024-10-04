@@ -1,4 +1,1 @@
-{ ... }:
-{
-  imports = [ ./zswap.nix ];
-}
+{ ... }: { imports = [ ./zswap.nix ]; }

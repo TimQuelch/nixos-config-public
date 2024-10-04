@@ -4,7 +4,7 @@ let
   github-keys = [ "primary_github" "client_github" ];
   github-match-blocks = builtins.listToAttrs (map (host: {
     name = host;
-    value = lib.hm.dag.entryBefore   ["default_github"] {
+    value = lib.hm.dag.entryBefore [ "default_github" ] {
       host = host;
       hostname = "github.com";
       user = "git";
@@ -14,53 +14,48 @@ let
   }) github-keys);
   inherit (lib) mkEnableOption mkOption mkIf types;
 in {
-  options.modules.ssh = {
-    enable = mkEnableOption "configure ssh client";
-  };
+  options.modules.ssh = { enable = mkEnableOption "configure ssh client"; };
 
   config = mkIf cfg.enable {
     programs.ssh = {
       enable = true;
       addKeysToAgent = "yes";
-      matchBlocks = (github-match-blocks //
-        {
-          "default_github" = lib.hm.dag.entryBefore ["default"] {
-            host = "github.com";
-            user = "git";
-            identitiesOnly = true;
-            identityFile = config.sops.secrets."ssh_auth_keys/primary_github".path;
-          };
-          "theta-boot" = lib.hm.dag.entryBefore ["default"] {
-            host = "theta-boot";
-            hostname = "192.168.20.99";
-            user = "root";
-            port = 123;
-            identitiesOnly = true;
-            identityFile = config.sops.secrets."ssh_auth_keys/non_sk".path;
-          };
-          "default" = {
-            host = "*";
-            identitiesOnly = true;
-            identityFile = config.sops.secrets."ssh_auth_keys/primary".path;
-          };
-        }
-      );
+      matchBlocks = (github-match-blocks // {
+        "default_github" = lib.hm.dag.entryBefore [ "default" ] {
+          host = "github.com";
+          user = "git";
+          identitiesOnly = true;
+          identityFile = config.sops.secrets."ssh_auth_keys/primary_github".path;
+        };
+        "theta-boot" = lib.hm.dag.entryBefore [ "default" ] {
+          host = "theta-boot";
+          hostname = "192.168.20.99";
+          user = "root";
+          port = 123;
+          identitiesOnly = true;
+          identityFile = config.sops.secrets."ssh_auth_keys/non_sk".path;
+        };
+        "default" = {
+          host = "*";
+          identitiesOnly = true;
+          identityFile = config.sops.secrets."ssh_auth_keys/primary".path;
+        };
+      });
     };
 
-    sops.secrets = (
-      builtins.listToAttrs (lib.mapCartesianProduct
-        ({ name, suf }: {name = "ssh_auth_keys/${name}${suf}"; value={};})
-        { name = github-keys; suf = ["" ".pub"];  }
-      )
-      //
-      builtins.listToAttrs (lib.mapCartesianProduct
-        ({ name, suf }: {
-          name = "ssh_auth_keys/${name}${suf}";
-          value.path = "${config.home.homeDirectory}/.ssh/${name}${suf}";
-        })
-        { name = [ "primary" "non_sk" ]; suf = ["" ".pub"];  }
-      )
-    );
+    sops.secrets = (builtins.listToAttrs (lib.mapCartesianProduct ({ name, suf }: {
+      name = "ssh_auth_keys/${name}${suf}";
+      value = { };
+    }) {
+      name = github-keys;
+      suf = [ "" ".pub" ];
+    }) // builtins.listToAttrs (lib.mapCartesianProduct ({ name, suf }: {
+      name = "ssh_auth_keys/${name}${suf}";
+      value.path = "${config.home.homeDirectory}/.ssh/${name}${suf}";
+    }) {
+      name = [ "primary" "non_sk" ];
+      suf = [ "" ".pub" ];
+    }));
 
     services.ssh-agent.enable = true;
 
