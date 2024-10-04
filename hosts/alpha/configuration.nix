@@ -6,6 +6,8 @@
     nvidiaSettings = true;
   };
 
+  services.libinput.mouse.accelProfile = "flat";
+
   services.xserver.videoDrivers = ["nvidia"];
 
   networking.wireless.iwd = {
