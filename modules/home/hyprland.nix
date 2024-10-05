@@ -1,10 +1,16 @@
 { pkgs, config, ... }:
-let nWorkspaces = 10;
+let
+  nWorkspaces = 10;
+  hyprland-scripting = pkgs.callPackage ../../packages/hyprland-scripting {};
 in {
   home.packages = with pkgs; [ firefox wofi polkit-kde-agent xwaylandvideobridge nwg-displays ];
 
   wayland.windowManager.hyprland.settings = {
-    exec-once = [ "waybar" ];
+    # Run some commands as  systemd transient serivces so we get logs in journal
+    exec-once = [
+      "waybar"
+      "systemd-run --user --wait ${hyprland-scripting}/bin/hyprland-listener"
+    ];
     "$mod" = "SUPER";
     bind = [
       # Control
