@@ -23,7 +23,7 @@ func FloatBitwardenHandler(msg HyprlandMessage) {
 	if !strings.HasPrefix(newTitle, "Extension: (Bitwarden") {
 		return
 	}
-	slog.Info("new bitwarden window", "windowId", windowId, "newTitle", newTitle)
+	slog.Info("new bitwarden window detected", "windowId", windowId, "newTitle", newTitle)
 
 	commands := []string{
 		fmt.Sprintf("dispatch setfloating address:0x%s", windowId),

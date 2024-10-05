@@ -63,14 +63,16 @@ func Listen(handlers []Handler) {
 	}
 	defer conn.Close()
 
+	slog.Info("connected to hyprland listen socket")
+
 	for {
 		msg, err := readSocket(conn)
 		if err != nil {
 			slog.Error("failed to read socket message", "error", err)
-			continue
+			panic(err)
 		}
 		msgs := parseSocketMessage(msg)
-		slog.Info("received messages", "message", msg, "parsed", msgs)
+		slog.Debug("received messages", "message", msg, "parsed", msgs)
 
 		handleMessages(handlers, msgs)
 	}
