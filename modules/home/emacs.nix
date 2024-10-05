@@ -65,6 +65,9 @@ in {
       # treemacs git
       python3
 
+      # nix mode
+      nixfmt-classic
+
       # My helpers
       doom-bin
       init-emacs-config-bin
