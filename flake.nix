@@ -41,7 +41,19 @@
           nixosConfigurations = mkHosts.mkNixOsHosts (nixOsFilter hosts);
           # Make home-manager configs for all hosts
           homeConfigurations = mkHosts.mkHomeManagerHosts hosts;
+          hyprland-scripting =
+            pkgs.callPackage ./packages/hyprland-scripting { };
         };
-        devShells.default = pkgs.mkShell { packages = with pkgs; [ sops age nixfmt ]; };
+        devShells.default = pkgs.mkShell {
+          packages = with pkgs; [
+            sops
+            age
+            nixfmt-classic
+            go
+            gopls
+            gotools
+            golangci-lint
+          ];
+        };
       });
 }
