@@ -1,9 +1,33 @@
 { pkgs, config, ... }:
 let
   nWorkspaces = 10;
-  hyprland-scripting = pkgs.callPackage ../../packages/hyprland-scripting {};
+  hyprland-scripting = pkgs.callPackage ../../packages/hyprland-scripting { };
+  compress-png = pkgs.writeShellApplication {
+    name = "compress-png";
+    runtimeInputs = [ pkgs.pngquant ];
+    text = ''
+      tmpFile="$(mktemp)"
+      pngquant "$1" --force --output "$tmpFile"
+      mv "$tmpFile" "$1"
+    '';
+  };
+  screenshotScripts = map (mode:
+    pkgs.writeShellApplication {
+      name = "screenshot-${mode}";
+      runtimeInputs = (with pkgs; [ hyprshot swappy ]) ++ [ compress-png ];
+      text = ''
+        hyprshot --mode=${mode} --freeze --clipboard-only --raw | swappy -f - && false
+        fd --changed-within 5s . "${config.xdg.userDirs.pictures}" -x compress-png {}
+      '';
+    }) [ "window" "region" ];
 in {
-  home.packages = with pkgs; [ firefox wofi polkit-kde-agent xwaylandvideobridge nwg-displays ];
+  home.packages = (with pkgs; [
+    firefox
+    wofi
+    polkit-kde-agent
+    xwaylandvideobridge
+    nwg-displays
+  ]) ++ screenshotScripts;
 
   wayland.windowManager.hyprland.settings = {
     # Run some commands as  systemd transient serivces so we get logs in journal
@@ -23,9 +47,13 @@ in {
       "$mod, J, movefocus, d"
       "$mod, K, movefocus, u"
 
-      # not sure what this is
+      # Special workspace
       "$mod, S, togglespecialworkspace, magic"
       "$mod SHIFT, S, movetoworkspace, special:magic"
+
+      # Screenshots
+      "$mod, PRINT, exec, screenshot-region"
+      "$mod SHIFT, PRINT, exec, screenshot-window"
 
       # Programs
       "$mod, C, exec, firefox"
@@ -125,4 +153,11 @@ in {
   xdg.portal.enable = true;
   xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-hyprland ];
   xdg.portal.configPackages = [ pkgs.xdg-desktop-portal-hyprland ];
+
+  xdg.configFile."swappy/config".text = ''
+    [Default]
+    save_dir=${config.xdg.userDirs.pictures}
+    save_filename_format=screenshot-%Y%m%d-%H%M%S.png
+    early_exit=true
+  '';
 }
