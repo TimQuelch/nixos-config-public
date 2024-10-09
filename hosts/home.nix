@@ -29,6 +29,7 @@
       sqlite
       julia
       dbeaver-bin
+      magic-wormhole
     ];
     sessionVariables = { EDITOR = "vim"; };
   };
