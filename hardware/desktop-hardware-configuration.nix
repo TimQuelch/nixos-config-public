@@ -6,14 +6,16 @@
 {
   imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
 
-  boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "ahci" "usb_storage" "sd_mod" ];
+  boot.initrd.availableKernelModules =
+    [ "nvme" "xhci_pci" "ahci" "usb_storage" "sd_mod" ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-amd" ];
   boot.extraModulePackages = [ ];
 
-  boot.initrd.luks.devices."main".device = "/dev/disk/by-uuid/5e7aed93-c722-4c97-b222-64cf0128598f";
+  boot.initrd.luks.devices."main".device =
+    "/dev/disk/by-uuid/5e7aed93-c722-4c97-b222-64cf0128598f";
 
-  fileSystems = lib.mapAttrs (path: options: {
+  fileSystems = (lib.mapAttrs (path: options: {
     device = "/dev/mapper/main";
     fsType = "btrfs";
     options = options;
@@ -22,6 +24,12 @@
     "/nix" = [ "subvol=@nix" "compress=zstd" "noatime" ];
     "/home" = [ "subvol=@home" "compress=zstd" ];
     "/swap" = [ "subvol=@swap" "noatime" ];
+  }) // {
+    "/boot" = {
+      device = "/dev/disk/by-uuid/B419-3ED0";
+      fsType = "vfat";
+      options = [ "fmask=0022" "dmask=0022" ];
+    };
   };
 
   swapDevices = [{ device = "/swap/swapfile"; }];
@@ -35,7 +43,8 @@
   # networking.interfaces.wlp4s0.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-  hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+  hardware.cpu.amd.updateMicrocode =
+    lib.mkDefault config.hardware.enableRedistributableFirmware;
 
   virtualisation.docker.storageDriver = "btrfs";
 }
