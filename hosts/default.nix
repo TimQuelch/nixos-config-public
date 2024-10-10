@@ -1,14 +1,17 @@
 { nixpkgs, pkgs, inputs, system }:
 let
-  mkNixOsConfig = { extraArgs, name, hardware, user, homeManagerModuleList, ... }:
+  pathIfExists = path:
+    nixpkgs.lib.optionals (builtins.pathExists path) [ path ];
+  mkNixOsConfig =
+    { extraArgs, name, hardware, user, homeManagerModuleList, ... }:
     nixpkgs.lib.nixosSystem {
       inherit system;
       specialArgs = extraArgs;
       modules = [
         ./configuration.nix
-        ./${name}/configuration.nix
-        ../hardware/${hardware}-hardware-configuration.nix
+        ../modules/os
         inputs.home-manager.nixosModules.home-manager
+        inputs.sops-nix.nixosModules.sops
         {
           home-manager = {
             useGlobalPkgs = true;
@@ -17,9 +20,8 @@ let
             users.${user} = { imports = homeManagerModuleList; };
           };
         }
-        inputs.sops-nix.nixosModules.sops
-        ../modules/os
-      ];
+      ] ++ (pathIfExists ./${name}/configuration.nix)
+        ++ (pathIfExists ../hardware/${hardware}-hardware-configuration.nix);
     };
   mkHomeManagerConfig = { extraArgs, homeManagerModuleList, ... }:
     inputs.home-manager.lib.homeManagerConfiguration {
@@ -30,16 +32,16 @@ let
   mkHosts = mkHost: hosts:
     builtins.listToAttrs (map (args@{ name, ... }:
       let
-        hostname = if builtins.hasAttr "hostname" args then args.hostname else name;
+        hostname =
+          if builtins.hasAttr "hostname" args then args.hostname else name;
         user = if builtins.hasAttr "user" args then args.user else "timquelch";
         extraArgs = { inherit pkgs inputs user hostname; };
         homeManagerModuleList = [
           ./home.nix
-          ./${name}/home.nix
+          ../modules/home
           inputs.sops-nix.homeManagerModules.sops
           inputs.nix-index-database.hmModules.nix-index
-          ../modules/home
-        ];
+        ] ++ (pathIfExists ./${name}/home.nix);
         common = { inherit user hostname extraArgs homeManagerModuleList; };
       in {
         name = hostname;

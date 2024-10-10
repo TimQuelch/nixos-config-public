@@ -1,4 +1,4 @@
-{ config, pkgs, user, ... }: {
+{ lib, config, pkgs, user, ... }: {
   # Setup secrets
   sops = {
     defaultSopsFile = ../secrets/user-secrets.yaml;
@@ -65,4 +65,8 @@
   modules.shell.direnv.enable = true;
   modules.ssh.enable = true;
   modules.emacs.enable = true;
+
+
+  # Should be overwritten in host specific configs
+  home.stateVersion = lib.mkDefault "24.05";
 }

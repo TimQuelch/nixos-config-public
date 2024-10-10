@@ -98,4 +98,7 @@
   # This is an annoying mix between home and non-home
   security.pam.services.hyprlock = { };
   environment.pathsToLink = [ "/share/xdg-desktop-portal" "/share/applications" ];
+
+  # Should be overwritten in host specific configs
+  system.stateVersion = lib.mkDefault "24.05";
 }

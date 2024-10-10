@@ -15,6 +15,12 @@
   outputs = inputs@{ nixpkgs, flake-utils, ... }:
     flake-utils.lib.eachDefaultSystem (system:
       let
+        consts = if (builtins.pathExists ./secrets/constants.nix) then
+          import ./secrets/constants.nix
+        else
+          { };
+        constOrDefault = name: default:
+          if (builtins.hasAttr name consts) then consts.${name} else default;
         # List of hosts to generate
         # `name` specifies which configuration to lookup
         # `hostname` defaults to name if not specified. lookup from env if we don't care
@@ -26,6 +32,11 @@
           }
           {
             name = "epsilon";
+            hardware = "laptop";
+          }
+          {
+            name = "work-laptop";
+            hostname = constOrDefault "workHostname" "work-laptop";
             hardware = "laptop";
           }
         ];
