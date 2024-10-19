@@ -85,6 +85,10 @@ in {
       "workspaces, 1, 3, default, slide"
       "specialWorkspace, 1, 2, default, slidefadevert"
     ];
+    misc = {
+      disable_splash_rendering = true;
+      disable_hyprland_logo = true;
+    };
   };
 
   programs.waybar.enable = true;
@@ -146,7 +150,14 @@ in {
 
   programs.hyprlock.enable = true;
 
-  # services. hyprpaper.enable = true;
+  services.hyprpaper = {
+    enable = true;
+    settings = {
+      preload = "${./wallpapers/iceberg.jpeg}";
+      wallpaper = ",${./wallpapers/iceberg.jpeg}";
+    };
+  };
+
   # services.hypridle.enable = true;
   services.mako.enable = true;
 
