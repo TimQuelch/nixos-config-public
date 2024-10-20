@@ -18,6 +18,7 @@
       ripgrep
       fd
       jq
+      tree
       kitty
       htop
       fzf
@@ -32,6 +33,9 @@
       julia
       dbeaver-bin
       magic-wormhole
+      zoom-us
+      pwvucontrol
+      discord
     ];
     sessionVariables = { EDITOR = "vim"; };
   };

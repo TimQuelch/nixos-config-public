@@ -15,10 +15,14 @@
   };
   networking.wireless.userControlled.enable = true;
 
-  # programs.steam = {
-  #   enable = true;
-  #   extraCompatPackages = [ pkgs.proton-ge-bin ];
-  # };
+  hardware.bluetooth.enable = true;
+  hardware.bluetooth.powerOnBoot = true;
+  services.blueman.enable = true;
+
+  programs.steam = {
+    enable = true;
+    extraCompatPackages = [ pkgs.proton-ge-bin ];
+  };
 
   # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
   system.stateVersion = "24.05";
