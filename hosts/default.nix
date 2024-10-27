@@ -1,12 +1,21 @@
 { nixpkgs, pkgs, inputs, system }:
 let
+  rebuildNixosConfig = pkgs.writeShellApplication {
+    name = "nr";
+    text = ''sudo nixos-rebuild switch --flake ~/nixos-config "$@"'';
+  };
+  rebuildHomeManagerConfig = pkgs.writeShellApplication {
+    name = "nr";
+    text = ''sudo home-manager switch --flake ~/nixos-config "$@"'';
+  };
   pathIfExists = path:
     nixpkgs.lib.optionals (builtins.pathExists path) [ path ];
   mkNixOsConfig =
     { extraArgs, name, hardware, user, homeManagerModuleList, ... }:
-    nixpkgs.lib.nixosSystem {
+    let extraArgs' = extraArgs // { rebuild = rebuildNixosConfig; };
+    in nixpkgs.lib.nixosSystem {
       inherit system;
-      specialArgs = extraArgs;
+      specialArgs = extraArgs';
       modules = [
         ./configuration.nix
         ../modules/os
@@ -16,7 +25,7 @@ let
           home-manager = {
             useGlobalPkgs = true;
             useUserPackages = true;
-            extraSpecialArgs = extraArgs;
+            extraSpecialArgs = extraArgs';
             users.${user} = { imports = homeManagerModuleList; };
           };
         }
@@ -26,7 +35,7 @@ let
   mkHomeManagerConfig = { extraArgs, homeManagerModuleList, ... }:
     inputs.home-manager.lib.homeManagerConfiguration {
       inherit pkgs;
-      extraSpecialArgs = extraArgs;
+      extraSpecialArgs = extraArgs // { rebuild = rebuildHomeManagerConfig; };
       modules = homeManagerModuleList;
     };
   mkHosts = mkHost: hosts:

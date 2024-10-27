@@ -1,4 +1,4 @@
-{ config, lib, pkgs, hostname, user, ... }: {
+{ config, lib, pkgs, hostname, user, rebuild, ... }: {
   # Enable flakes
   nix = {
     package = pkgs.nixFlakes;
@@ -81,7 +81,7 @@
   programs.zsh.enable = true;
 
   # Defer nearly all packages to home manger configs
-  environment.systemPackages = with pkgs; [ vim ];
+  environment.systemPackages = with pkgs; [ rebuild vim ];
 
   documentation.man = {
     man-db.enable = true;

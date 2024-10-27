@@ -1,4 +1,4 @@
-{ lib, config, pkgs, user, ... }: {
+{ lib, config, pkgs, user, rebuild, ... }: {
   # Setup secrets
   sops = {
     defaultSopsFile = ../secrets/user-secrets.yaml;
@@ -10,6 +10,7 @@
     username = user;
     homeDirectory = "/home/${user}";
     packages = with pkgs; [
+      rebuild                   # rebuild nixos/homemanger config
       firefox
       git
       vim
