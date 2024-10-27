@@ -1,1 +1,3 @@
-{ ... }: { imports = [ ./shell ./ssh.nix ./hyprland.nix ./emacs.nix ]; }
+{ ... }: {
+  imports = [ ./shell ./ssh.nix ./hyprland.nix ./emacs.nix ./email.nix ];
+}
