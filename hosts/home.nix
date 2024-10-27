@@ -12,6 +12,7 @@
     packages = with pkgs; [
       rebuild                   # rebuild nixos/homemanger config
       firefox
+      chromium
       git
       vim
       ripgrep
