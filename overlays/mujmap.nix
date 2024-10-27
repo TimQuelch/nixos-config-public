@@ -11,6 +11,8 @@ final: prev: {
       hash = "sha256-mSJ6uyZSaWWdhqiYNcIm7lC6PZZrZ8PSdxfu+s9MZD0=";
     };
 
+    patches = [ ./0001-Override-chunk_size-for-upload.patch ];
+
     cargoDeps = prevAttrs.cargoDeps.overrideAttrs (prev.lib.const {
       inherit src;
       outputHash = "sha256-KH0NrHrUcHc1DTWdeEtIuoFG86+mxtShDXMH+jXDJ/s=";

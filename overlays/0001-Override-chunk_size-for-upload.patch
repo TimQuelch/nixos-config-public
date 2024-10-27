@@ -1,0 +1,29 @@
+From 31c4a0a0a514a985e535b8a6094750debe7e73d2 Mon Sep 17 00:00:00 2001
+From: Tim Quelch <tim@tquelch.com>
+Date: Sun, 27 Oct 2024 21:25:30 +1100
+Subject: [PATCH] Override chunk_size for upload
+
+fastmail publishes a max_objects_in_set of 4096. However when doing
+large tag updates the query times out.
+
+This overrides the chunk size to be a lower limit of 512.
+---
+ src/remote.rs | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/remote.rs b/src/remote.rs
+index 7829255..7a61509 100644
+--- a/src/remote.rs
++++ b/src/remote.rs
+@@ -994,7 +994,7 @@ impl Remote {
+         // Send it off into cyberspace~
+         const SET_METHOD_ID: &str = "0";
+ 
+-        let chunk_size = self.session.capabilities.core.max_objects_in_set as usize;
++        let chunk_size = 512;
+ 
+         for chunk in &updates.into_iter().chunks(chunk_size) {
+             let account_id = &self.session.primary_accounts.mail;
+-- 
+2.46.0
+
