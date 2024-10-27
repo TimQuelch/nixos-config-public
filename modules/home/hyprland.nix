@@ -27,6 +27,7 @@ in {
     polkit-kde-agent
     xwaylandvideobridge
     nwg-displays
+    wl-clipboard
   ]) ++ screenshotScripts;
 
   wayland.windowManager.hyprland.settings = {
