@@ -6,12 +6,14 @@ in {
   options.modules.email = { enable = mkEnableOption "email"; };
 
   config = mkIf cfg.enable {
+    sops.secrets.fastmail_token = { };
+
     accounts.email.accounts.personal = {
       primary = true;
       address = "tim@tquelch.com";
       realName = "Tim Quelch";
       flavor = "fastmail.com";
-      passwordCommand = "cat /tmp/token";
+      passwordCommand = "cat ${config.sops.secrets.fastmail_token.path}";
       notmuch.enable = true;
       mujmap.enable = true;
     };
