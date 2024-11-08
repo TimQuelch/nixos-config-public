@@ -1,10 +1,10 @@
 { config, lib, pkgs, hostname, user, rebuild, ... }: {
   # Enable flakes
   nix = {
-    package = pkgs.nixFlakes;
     settings = {
       experimental-features = [ "nix-command" "flakes" ];
       use-xdg-base-directories = true;
+      trusted-users = [ "root" user ];
     };
     gc = {
       automatic = true;
