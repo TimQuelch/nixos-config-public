@@ -66,10 +66,6 @@
             gotools
             golangci-lint
           ];
-
-          shellHook = ''
-            go mod download -x
-          '';
         };
       });
 }
