@@ -63,6 +63,15 @@
   services.displayManager.sddm.enable = true;
   programs.hyprland.enable = true;
 
+  programs.uwsm = {
+    enable = true;
+    waylandCompositors.hyprland = {
+      binPath = "/run/current-system/sw/bin/Hyprland";
+      comment = "Hyprland session managed by uwsm";
+      prettyName = "Hyprland";
+    };
+  };
+
   # Configure audio
   services.pipewire = {
     enable = true;
