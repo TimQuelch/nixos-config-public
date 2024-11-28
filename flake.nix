@@ -37,7 +37,6 @@
           {
             name = "work-laptop";
             hostname = constOrDefault "workHostname" "work-laptop";
-            hardware = "laptop";
           }
         ];
         pkgs = import nixpkgs {
