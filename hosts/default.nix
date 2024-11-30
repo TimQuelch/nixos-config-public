@@ -1,13 +1,12 @@
 { nixpkgs, pkgs, inputs, system }:
 let
-  rebuildNixosConfig = pkgs.writeShellApplication {
-    name = "nr";
-    text = ''sudo nixos-rebuild switch --flake ~/nixos-config "$@"'';
-  };
-  rebuildHomeManagerConfig = pkgs.writeShellApplication {
-    name = "nr";
-    text = ''sudo home-manager switch --flake ~/nixos-config "$@"'';
-  };
+  mkRebuilder = builder:
+    pkgs.writeShellApplication {
+      name = "nr";
+      text = ''${builder} switch --flake ~/nixos-config "$@"'';
+    };
+  rebuildNixosConfig = mkRebuilder "sudo nixos-rebuild";
+  rebuildHomeManagerConfig = mkRebuilder "home-manager";
   pathIfExists = path:
     nixpkgs.lib.optionals (builtins.pathExists path) [ path ];
   mkNixOsConfig =
