@@ -68,6 +68,20 @@ in {
       # nix mode
       nixfmt-classic
 
+      # utils
+      shellcheck
+
+      # formatters
+      black
+      clang-tools
+      cmake-format
+      dprint
+      nixfmt-classic
+      nodePackages.prettier
+      shfmt
+      stylua
+      rustfmt
+
       # My helpers
       doom-bin
       init-emacs-config-bin
