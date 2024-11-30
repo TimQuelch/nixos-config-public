@@ -1,7 +1,7 @@
 { lib, config, pkgs, user, rebuild, ... }: {
   # Setup secrets
   sops = {
-    defaultSopsFile = ../secrets/user-secrets.yaml;
+    defaultSopsFile = ../secrets/user-secrets-untrusted.yaml;
     age.keyFile = "${config.xdg.configHome}/sops/age/sops-nix.txt";
     age.generateKey = true;
   };

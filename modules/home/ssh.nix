@@ -25,7 +25,8 @@ in {
           host = "github.com";
           user = "git";
           identitiesOnly = true;
-          identityFile = config.sops.secrets."ssh_auth_keys/primary_github".path;
+          identityFile =
+            config.sops.secrets."ssh_auth_keys/primary_github".path;
         };
         "theta-boot" = lib.hm.dag.entryBefore [ "default" ] {
           host = "theta-boot";
@@ -43,19 +44,32 @@ in {
       });
     };
 
-    sops.secrets = (builtins.listToAttrs (lib.mapCartesianProduct ({ name, suf }: {
-      name = "ssh_auth_keys/${name}${suf}";
-      value = { };
-    }) {
-      name = github-keys;
-      suf = [ "" ".pub" ];
-    }) // builtins.listToAttrs (lib.mapCartesianProduct ({ name, suf }: {
-      name = "ssh_auth_keys/${name}${suf}";
-      value.path = "${config.home.homeDirectory}/.ssh/${name}${suf}";
-    }) {
-      name = [ "primary" "non_sk" ];
-      suf = [ "" ".pub" ];
-    }));
+    sops.secrets = (builtins.listToAttrs (lib.mapCartesianProduct
+      ({ name, suf }: {
+        name = "ssh_auth_keys/${name}${suf}";
+        value = { };
+      }) {
+        name = github-keys;
+        suf = [ "" ".pub" ];
+      }) // builtins.listToAttrs (lib.mapCartesianProduct ({ key, suf }: {
+        name = "ssh_auth_keys/${key.name}${suf}";
+        value = {
+          path = "${config.home.homeDirectory}/.ssh/${key.name}${suf}";
+          sopsFile = key.file;
+        };
+      }) {
+        key = [
+          {
+            name = "primary";
+            file = ../../secrets/user-secrets-untrusted.yaml;
+          }
+          {
+            name = "non_sk";
+            file = ../../secrets/user-secrets.yaml;
+          }
+        ];
+        suf = [ "" ".pub" ];
+      }));
 
     services.ssh-agent.enable = true;
 
@@ -71,7 +85,8 @@ in {
       };
       Service = let
         keyPath = config.sops.secrets."ssh_auth_keys/primary.pub".path;
-        authorizedKeysPath = "${config.home.homeDirectory}/.ssh/authorized_keys";
+        authorizedKeysPath =
+          "${config.home.homeDirectory}/.ssh/authorized_keys";
       in {
         Type = "oneshot";
         ExecStart = ''
