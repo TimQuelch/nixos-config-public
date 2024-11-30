@@ -1,4 +1,4 @@
-{ pkgs, config, ... }:
+{ pkgs, config, inputs, system, ... }:
 let
   nWorkspaces = 10;
   hyprland-scripting = pkgs.callPackage ../../packages/hyprland-scripting { };
@@ -28,6 +28,7 @@ in {
     xwaylandvideobridge
     nwg-displays
     wl-clipboard
+    inputs.hyprswitch.packages.${system}.default
   ]) ++ screenshotScripts;
 
   wayland.windowManager.hyprland.settings = {
@@ -35,6 +36,7 @@ in {
     exec-once = [
       "waybar"
       "systemd-run --user --wait ${hyprland-scripting}/bin/hyprland-listener"
+      "systemd-run --user --wait hyprswitch init"
     ];
     "$mod" = "SUPER";
     bind = [
@@ -47,6 +49,8 @@ in {
       "$mod, L, movefocus, r"
       "$mod, J, movefocus, d"
       "$mod, K, movefocus, u"
+
+      "$mod, TAB, exec, hyprswitch gui --mod-key super_l --key tab --close mod-key-release --switch-type workspace && hyprswitch dispatch"
 
       # Special workspace
       "$mod, S, togglespecialworkspace, magic"

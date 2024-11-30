@@ -10,6 +10,8 @@
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
     nix-index-database.url = "github:nix-community/nix-index-database";
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
+    hyprswitch.url = "github:H3rmt/hyprswitch";
+    hyprswitch.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = inputs@{ nixpkgs, flake-utils, ... }:
