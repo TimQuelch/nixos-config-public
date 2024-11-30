@@ -43,34 +43,13 @@
 
   programs.home-manager.enable = true;
 
-  programs.git = {
-    enable = true;
-    userEmail = "tim@tquelch.com";
-    userName = "Tim Quelch";
-    aliases = { graph = "log --oneline --all --decorate --graph"; };
-    extraConfig = {
-      push = {
-        default = "current";
-        autoSetupRemote = true;
-      };
-      merge = { ff = false; };
-      pull = { ff = "only"; };
-      init = { defaultBranch = "main"; };
-      # url = {
-      #   "ssh://git@github.com:" = {
-      #     insteadOf = "https://github.com/";
-      #   };
-      # };
-    };
-    delta.enable = true;
-  };
-
   programs.nix-index.enable = true;
 
-  modules.shell.zsh.enable = true;
-  modules.shell.direnv.enable = true;
-  modules.ssh.enable = true;
-  modules.emacs.enable = true;
+  modules.git.enable = lib.mkDefault true;
+  modules.shell.zsh.enable = lib.mkDefault true;
+  modules.shell.direnv.enable = lib.mkDefault true;
+  modules.ssh.enable = lib.mkDefault true;
+  modules.emacs.enable = lib.mkDefault true;
 
 
   # Should be overwritten in host specific configs
