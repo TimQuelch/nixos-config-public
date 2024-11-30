@@ -1,9 +1,9 @@
 { ... }: {
   imports = [
     ./shell
+    ./gui
     ./work
     ./ssh.nix
-    ./hyprland.nix
     ./emacs.nix
     ./email.nix
     ./git.nix

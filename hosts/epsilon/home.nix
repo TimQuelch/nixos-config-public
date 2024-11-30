@@ -1,3 +1,1 @@
-{ config, pkgs, system, ... }: {
-  wayland.windowManager.hyprland.enable = true;
-}
+{ config, pkgs, system, ... }: { modules.gui.enable = true; }

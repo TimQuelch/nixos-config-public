@@ -11,18 +11,14 @@
     homeDirectory = "/home/${user}";
     packages = with pkgs; [
       rebuild # rebuild nixos/homemanger config
-      firefox
-      chromium
       git
       vim
       ripgrep
       fd
       jq
       tree
-      kitty
       htop
       fzf
-      bitwarden
       iosevka
       yubikey-manager
       duf
@@ -31,11 +27,7 @@
       magic-wormhole
       sqlite
       julia
-      dbeaver-bin
       magic-wormhole
-      zoom-us
-      pwvucontrol
-      discord
     ];
     sessionVariables = { EDITOR = "vim"; };
   };
