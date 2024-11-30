@@ -66,6 +66,7 @@
             gopls
             gotools
             golangci-lint
+            git-filter-repo
           ];
         };
       });

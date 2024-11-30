@@ -1,0 +1,15 @@
+keys:
+  - &dummy_key age1u08fy22czlyq7fswk27k452hs7067zmg6d8rck7heg87w493mugqynyqa2
+creation_rules:
+  - path_regex: secrets/secrets.yaml
+    key_groups:
+      - age:
+        - *dummy_key
+  - path_regex: secrets/user-secrets.yaml
+    key_groups:
+      - age:
+        - *dummy_key
+  - path_regex: secrets/user-secrets-untrusted.yaml
+    key_groups:
+      - age:
+        - *dummy_key
