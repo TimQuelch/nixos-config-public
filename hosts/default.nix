@@ -17,7 +17,7 @@ let
       inherit system;
       specialArgs = extraArgs';
       modules = [
-        ./configuration.nix
+        ../config/configuration.nix
         ../modules/os
         inputs.home-manager.nixosModules.home-manager
         inputs.sops-nix.nixosModules.sops
@@ -46,7 +46,7 @@ let
         user = if builtins.hasAttr "user" args then args.user else "timquelch";
         extraArgs = { inherit pkgs inputs user hostname; };
         homeManagerModuleList = [
-          ./home.nix
+          ../config/home.nix
           ../modules/home
           inputs.sops-nix.homeManagerModules.sops
           inputs.nix-index-database.hmModules.nix-index
