@@ -44,10 +44,11 @@ in {
       });
     };
 
+    # SSH keys which are SK based (on yubikey) are safe to store on untrusted devices
     sops.secrets = (builtins.listToAttrs (lib.mapCartesianProduct
       ({ name, suf }: {
         name = "ssh_auth_keys/${name}${suf}";
-        value = { };
+        value = { sopsFile = ../../secrets/user-secrets-untrusted.yaml; };
       }) {
         name = github-keys;
         suf = [ "" ".pub" ];
