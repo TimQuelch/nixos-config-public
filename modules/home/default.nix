@@ -7,5 +7,6 @@
     ./emacs.nix
     ./email.nix
     ./git.nix
+    ./dirs.nix
   ];
 }

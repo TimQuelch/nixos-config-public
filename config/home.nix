@@ -42,6 +42,7 @@
   modules.shell.direnv.enable = lib.mkDefault true;
   modules.ssh.enable = lib.mkDefault true;
   modules.emacs.enable = lib.mkDefault true;
+  modules.dirs.enable = lib.mkDefault true;
 
   # Should be overwritten in host specific configs
   home.stateVersion = lib.mkDefault "24.05";

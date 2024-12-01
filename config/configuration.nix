@@ -108,6 +108,9 @@
   security.pam.services.hyprlock = { };
   environment.pathsToLink = [ "/share/xdg-desktop-portal" "/share/applications" ];
 
+  # use new dbus broker instead of old bus
+  services.dbus.implementation = "broker";
+
   # Should be overwritten in host specific configs
   system.stateVersion = lib.mkDefault "24.05";
 }
