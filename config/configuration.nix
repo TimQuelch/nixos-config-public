@@ -94,7 +94,7 @@
 
   documentation.man = {
     man-db.enable = true;
-    generateCaches = true;
+    generateCaches = false;     # disabled because it takes a long time on rebuild
   };
 
   services.locate.enable = true;
