@@ -37,7 +37,7 @@ git config advice.skippedCherryPicks false
 git rebase --verbose public/master
 
 # Count new commits
-NEW_COMMITS=$(git log --pretty=format:"%h" "public/master"..HEAD | wc -l)
+NEW_COMMITS=$(git rev-list --count "public/master"..HEAD)
 
 # Check if there are any new commits
 if [[ "$NEW_COMMITS" -eq 0 ]]; then
