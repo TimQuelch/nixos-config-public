@@ -81,8 +81,8 @@
   sops.secrets.user_password.neededForUsers = true;
   users.users.${user} = {
     isNormalUser = true;
-    extraGroups =
-      ([ "wheel" ] ++ (if config.virtualisation.docker.enable then [ "docker" ] else [ ]));
+    extraGroups = ([ "wheel" ]
+      ++ (lib.optionals config.virtualisation.docker.enable [ "docker" ]));
     hashedPasswordFile = config.sops.secrets.user_password.path;
     shell = pkgs.zsh;
   };
