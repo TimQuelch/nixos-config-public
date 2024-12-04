@@ -3,7 +3,9 @@ let
   mkRebuilder = builder:
     pkgs.writeShellApplication {
       name = "nr";
-      text = ''${builder} switch --flake ~/nixos-config "$@"'';
+      text = ''
+        ${builder} switch --flake "$HOME/nixos-config#$(${pkgs.hostname}/bin/hostname)" "$@"
+      '';
     };
   rebuildNixosConfig = mkRebuilder "sudo nixos-rebuild";
   rebuildHomeManagerConfig = mkRebuilder "home-manager";
