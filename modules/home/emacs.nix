@@ -71,6 +71,9 @@ in {
       # utils
       shellcheck
 
+      # for copilot
+      nodejs
+
       # formatters
       black
       clang-tools
