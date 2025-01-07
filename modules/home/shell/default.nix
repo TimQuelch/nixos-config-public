@@ -1,1 +1,1 @@
-{ ... }: { imports = [ ./zsh.nix ./direnv.nix ]; }
+{ ... }: { imports = [ ./zsh.nix ./direnv.nix ./aliases.nix ]; }
