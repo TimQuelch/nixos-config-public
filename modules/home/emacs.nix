@@ -39,7 +39,7 @@ in {
 
       # fonts
       iosevka
-      nerd-fonts.symbols-only
+      (pkgs.nerdfonts.override { fonts = [ "NerdFontsSymbolsOnly" ]; })
 
       # doom
       git
