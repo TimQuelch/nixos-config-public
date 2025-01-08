@@ -1,4 +1,4 @@
-{ lib, config, pkgs, options, inputs, system, ... }:
+{ lib, config, pkgs, options, ... }:
 let
   cfg = config.modules.email;
   inherit (lib) mkEnableOption mkIf;

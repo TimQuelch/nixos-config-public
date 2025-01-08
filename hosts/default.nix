@@ -1,4 +1,4 @@
-{ nixpkgs, pkgs, inputs, system }:
+{ nixpkgs, pkgs, inputs }:
 let
   mkRebuilder = builder:
     pkgs.writeShellApplication {
@@ -15,9 +15,10 @@ let
     { extraArgs, name, hardware, user, homeManagerModuleList, ... }:
     let extraArgs' = extraArgs // { rebuild = rebuildNixosConfig; };
     in nixpkgs.lib.nixosSystem {
-      inherit system;
       specialArgs = extraArgs';
       modules = [
+        nixpkgs.nixosModules.readOnlyPkgs
+        ({ ... }: { nixpkgs.pkgs = pkgs; })
         ../config/configuration.nix
         ../modules/os
         inputs.home-manager.nixosModules.home-manager
@@ -45,7 +46,7 @@ let
         hostname =
           if builtins.hasAttr "hostname" args then args.hostname else name;
         user = if builtins.hasAttr "user" args then args.user else "timquelch";
-        extraArgs = { inherit pkgs inputs user hostname system; };
+        extraArgs = { inherit inputs user hostname; };
         homeManagerModuleList = [
           ../config/home.nix
           ../modules/home

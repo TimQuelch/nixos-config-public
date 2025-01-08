@@ -1,1 +1,1 @@
-{ config, pkgs, system, ... }: { modules.gui.enable = true; }
+{ config, pkgs, ... }: { modules.gui.enable = true; }
