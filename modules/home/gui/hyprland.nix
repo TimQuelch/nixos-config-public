@@ -1,9 +1,7 @@
-{ lib, options, config, pkgs, inputs, system, ... }:
+{ lib, options, config, pkgs, ... }:
 let
   cfg = config.modules.gui.hyprland;
   nWorkspaces = 10;
-  hyprland-scripting =
-    pkgs.callPackage ../../../packages/hyprland-scripting { };
   compress-png = pkgs.writeShellApplication {
     name = "compress-png";
     runtimeInputs = [ pkgs.pngquant ];
@@ -35,14 +33,14 @@ in {
       xwaylandvideobridge
       nwg-displays
       wl-clipboard
-      inputs.hyprswitch.packages.${system}.default
+      hyprswitch
     ]) ++ screenshotScripts;
 
     wayland.windowManager.hyprland.settings = {
       # Run some commands as  systemd transient serivces so we get logs in journal
       exec-once = [
         "waybar"
-        "systemd-run --user --wait ${hyprland-scripting}/bin/hyprland-listener"
+        "systemd-run --user --wait ${pkgs.custom.hyprland-scripting}/bin/hyprland-listener"
         "systemd-run --user --wait hyprswitch init"
       ];
       "$mod" = "SUPER";

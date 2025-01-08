@@ -44,19 +44,21 @@
         pkgs = import nixpkgs {
           inherit system;
           config = { allowUnfree = true; };
-          overlays = [ (import ./overlays/mujmap.nix) ];
+          overlays = (import ./overlays) ++ [
+            (final: prev: {
+              inherit (inputs.hyprswitch.packages.${prev.system}) hyprswitch;
+            })
+          ];
         };
         nixOsFilter = pkgs.lib.filter (h: builtins.hasAttr "hardware" h);
-        mkHosts = import ./hosts { inherit nixpkgs pkgs inputs system; };
+        mkHosts = import ./hosts { inherit nixpkgs pkgs inputs; };
       in {
         packages = {
           # Make nixos configs for only hosts that have hardware associated
           nixosConfigurations = mkHosts.mkNixOsHosts (nixOsFilter hosts);
           # Make home-manager configs for all hosts
           homeConfigurations = mkHosts.mkHomeManagerHosts hosts;
-          hyprland-scripting =
-            pkgs.callPackage ./packages/hyprland-scripting { };
-        };
+        } // pkgs.custom;
         devShells.default = pkgs.mkShell {
           packages = with pkgs; [
             sops
