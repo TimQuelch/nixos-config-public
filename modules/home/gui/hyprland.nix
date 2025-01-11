@@ -34,6 +34,7 @@ in {
       nwg-displays
       wl-clipboard
       hyprswitch
+      brightnessctl
     ]) ++ screenshotScripts;
 
     wayland.windowManager.hyprland.settings = {
@@ -70,6 +71,10 @@ in {
         "$mod, R, exec, wofi --show drun"
         "$mod, RETURN, exec, kitty"
         "$mod, T, exec, kitty"
+
+        # fn keys
+        ", XF86MonBrightnessUp, exec, brightnessctl set '+15%'"
+        ", XF86MonBrightnessDown, exec, brightnessctl set '15%-'"
       ] ++ (builtins.concatLists (builtins.genList (x:
         let
           ws = let c = (x + 1) / nWorkspaces;
