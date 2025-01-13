@@ -36,6 +36,11 @@ in {
           identitiesOnly = true;
           identityFile = config.sops.secrets."ssh_auth_keys/non_sk".path;
         };
+        "theta" = lib.hm.dag.entryBefore [ "default" ] {
+          host = "theta";
+          identitiesOnly = true;
+          identityFile = config.sops.secrets."ssh_auth_keys/non_sk".path;
+        };
         "default" = {
           host = "*";
           identitiesOnly = true;
