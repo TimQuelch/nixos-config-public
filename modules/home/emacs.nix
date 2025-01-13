@@ -74,6 +74,13 @@ in {
       # for copilot
       nodejs
 
+      # lsps
+      pyright
+      typescript-language-server
+      clang-tools
+      rust-analyzer
+      gopls
+
       # formatters
       black
       clang-tools
