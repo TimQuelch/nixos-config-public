@@ -38,8 +38,13 @@ in {
       ];
       # Do this here instead of in a plugin so that it this config happens after
       # the fzf zsh eval. We want this to supercede it
-      initExtra = lib.mkIf cfg.customFzfTabCompletion
-        "source ${customFzfCompletionDir}/zsh/fzf-zsh-completion.sh";
+      initExtra = (lib.optionalString cfg.customFzfTabCompletion ''
+        source ${customFzfCompletionDir}/zsh/fzf-zsh-completion.sh
+      '') + ''
+        autoload -z edit-command-line
+        zle -N edit-command-line
+        bindkey "^X^E" edit-command-line
+      '';
       history = {
         ignoreDups = true;
         ignoreSpace = true;
