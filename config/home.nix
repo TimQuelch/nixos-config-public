@@ -29,6 +29,7 @@
       julia
       magic-wormhole
       gh
+      awscli2
     ];
     sessionVariables = { EDITOR = "vim"; };
   };

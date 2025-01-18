@@ -80,6 +80,7 @@ in {
       clang-tools
       rust-analyzer
       gopls
+      yaml-language-server
 
       # formatters
       black
