@@ -1,5 +1,5 @@
 { options, config, lib, pkgs, ... }:
-let cfg = config.modules.gui.packages;
+let cfg = config.modules.gui.ghostty;
 in {
   options.modules.gui.ghostty.enable = lib.mkEnableOption "ghostty";
 
