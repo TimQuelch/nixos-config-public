@@ -1,6 +1,7 @@
 { lib, options, config, pkgs, ... }:
 let
   cfg = config.modules.gui.hyprland;
+  defaultTerminal = "ghostty";
   nWorkspaces = 10;
   compress-png = pkgs.writeShellApplication {
     name = "compress-png";
@@ -22,7 +23,14 @@ let
     }) [ "window" "region" ];
 in {
 
-  options.modules.gui.hyprland.enable = lib.mkEnableOption "hyprland config";
+  options.modules.gui.hyprland = {
+    enable = lib.mkEnableOption "hyprland config";
+    terminal = lib.mkOption {
+      type = lib.types.str;
+      default = defaultTerminal;
+      description = "Terminal to use with hyprland";
+    };
+  };
 
   config = lib.mkIf cfg.enable {
     wayland.windowManager.hyprland.enable = true;
@@ -69,8 +77,8 @@ in {
         # Programs
         "$mod, C, exec, firefox"
         "$mod, R, exec, wofi --show drun"
-        "$mod, RETURN, exec, kitty"
-        "$mod, T, exec, kitty"
+        "$mod, RETURN, exec, ${cfg.terminal}"
+        "$mod, T, exec, ${cfg.terminal}"
 
         # fn keys
         ", XF86MonBrightnessUp, exec, brightnessctl set '+15%'"

@@ -9,7 +9,6 @@ in {
     home.packages = with pkgs; [
       firefox
       chromium
-      kitty
       bitwarden
       zoom-us
       pwvucontrol
