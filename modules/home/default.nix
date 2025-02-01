@@ -8,5 +8,6 @@
     ./email.nix
     ./git.nix
     ./dirs.nix
+    ./aider.nix
   ];
 }
