@@ -90,7 +90,7 @@
   programs.zsh.enable = true;
 
   # Defer nearly all packages to home manger configs
-  environment.systemPackages = with pkgs; [ rebuild vim ];
+  environment.systemPackages = with pkgs; [ rebuild vim tmux ];
 
   documentation.man = {
     man-db.enable = true;
