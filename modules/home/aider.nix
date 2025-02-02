@@ -29,6 +29,16 @@ in {
 
     sops.secrets."anthropic_key" = { };
 
+    home.file.".aider.conf.yml" = {
+      text = ''
+        cache-prompts: true
+        dark-mode: true
+        show-diffs: true
+        attribute-author: false
+        attribute-committer: false
+      '';
+    };
+
     systemd.user.services.update-anthropic-env = {
       Unit = {
         Description = "Update Anthropic API key in .env file";
