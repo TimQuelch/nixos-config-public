@@ -25,6 +25,11 @@
     options = [ "fmask=0022" "dmask=0022" ];
   };
 
+  modules.btrfs-maintenance = {
+    enable = true;
+    mountPoints = [ "/" ];
+  };
+
   swapDevices = [{ device = "/swap/swapfile"; }];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
