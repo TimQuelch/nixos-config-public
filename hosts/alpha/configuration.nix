@@ -23,4 +23,9 @@
     enable = true;
     extraCompatPackages = [ pkgs.proton-ge-bin ];
   };
+
+  services.ollama = {
+    enable = true;
+    acceleration = "cuda";
+  };
 }
