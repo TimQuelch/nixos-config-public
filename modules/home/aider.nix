@@ -41,7 +41,6 @@ in {
       text = ''
         cache-prompts: true
         dark-mode: true
-        show-diffs: true
         attribute-author: false
         attribute-committer: false
       '';
