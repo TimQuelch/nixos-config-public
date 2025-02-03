@@ -1,5 +1,5 @@
 { config, lib, pkgs, ... }:
-with lib;
+
 let
   cfg = config.modules.aider;
   updateEnvScript = pkgs.writeShellApplication {
@@ -22,9 +22,11 @@ let
     '';
   };
 in {
-  options.modules.aider = { enable = mkEnableOption "aider configuration"; };
+  options.modules.aider = {
+    enable = lib.mkEnableOption "aider configuration";
+  };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     home.packages = [ pkgs.aider-chat ];
 
     sops.secrets."anthropic_key" = { };
