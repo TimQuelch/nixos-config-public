@@ -30,7 +30,6 @@
       magic-wormhole
       gh
       awscli2
-      aider-chat
     ];
     sessionVariables = { EDITOR = "vim"; };
   };

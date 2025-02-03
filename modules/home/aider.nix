@@ -2,6 +2,7 @@
 
 let
   cfg = config.modules.aider;
+  aiderPackage = cfg.package;
   updateEnvScript = pkgs.writeShellApplication {
     name = "update-anthropic-key-env";
     text = ''
@@ -24,10 +25,15 @@ let
 in {
   options.modules.aider = {
     enable = lib.mkEnableOption "aider configuration";
+    package = lib.mkOption {
+      type = lib.types.package;
+      default = pkgs.aider-chat;
+      description = "The aider package to use";
+    };
   };
 
   config = lib.mkIf cfg.enable {
-    home.packages = [ pkgs.aider-chat ];
+    home.packages = [ aiderPackage ];
 
     sops.secrets."anthropic_key" = { };
 
