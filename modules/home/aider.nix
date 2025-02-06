@@ -40,6 +40,7 @@ in {
     home.file.".aider.conf.yml" = {
       text = ''
         cache-prompts: true
+        stream: false
         dark-mode: true
         attribute-author: false
         attribute-committer: false
