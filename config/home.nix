@@ -16,6 +16,7 @@
       ripgrep
       fd
       jq
+      yq
       tree
       htop
       fzf
