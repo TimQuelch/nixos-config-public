@@ -29,6 +29,8 @@
     acceleration = "cuda";
   };
 
+  networking.firewall.allowedTCPPorts = [ 80 ];
+
   sops.secrets.nix_priv.sopsFile = ./secrets.yaml;
   services.nix-serve = {
     enable = true;
