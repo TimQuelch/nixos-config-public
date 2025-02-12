@@ -31,6 +31,7 @@
       magic-wormhole
       gh
       awscli2
+      sshfs
     ];
     sessionVariables = { EDITOR = "vim"; };
   };
