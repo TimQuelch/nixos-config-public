@@ -75,7 +75,8 @@ in {
       nodejs
 
       # lsps
-      pyright
+      basedpyright
+      ruff
       typescript-language-server
       clang-tools
       rust-analyzer
