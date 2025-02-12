@@ -28,4 +28,22 @@
     enable = true;
     acceleration = "cuda";
   };
+
+  sops.secrets.nix_priv.sopsFile = ./secrets.yaml;
+  services.nix-serve = {
+    enable = true;
+    secretKeyFile = config.sops.secrets.nix_priv.path;
+  };
+  services.nginx = {
+    enable = true;
+    recommendedProxySettings = true;
+    virtualHosts = {
+      "nix.alpha.tquelch.com" = {
+        locations."/".proxyPass =
+          "http://${config.services.nix-serve.bindAddress}:${
+            toString config.services.nix-serve.port
+          }";
+      };
+    };
+  };
 }

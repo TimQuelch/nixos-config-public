@@ -1,9 +1,13 @@
 { config, lib, pkgs, hostname, user, rebuild, ... }: {
   nix = {
     settings = {
-      substituters =
-        [ "http://nix.epsilon.tquelch.com" "https://cache.nixos.org/" ];
+      substituters = [
+        "http://nix.alpha.tquelch.com"
+        "http://nix.epsilon.tquelch.com"
+        "https://cache.nixos.org"
+      ];
       trusted-public-keys = [
+        "nix.alpha.tquelch.com-1:VP//Cf8i9AKmPBm+loX6T3rsXm9IoID7TApp7stR7Ys="
         "nix.epsilon.tquelch.com-1:YkLqk/hXEnt+WIVVef+qNwXNAoQOMqdNjOS4B2Mm5Tk="
         "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
       ];
