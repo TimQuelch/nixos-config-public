@@ -11,6 +11,8 @@
     extraCompatPackages = [ pkgs.proton-ge-bin ];
   };
 
+  networking.firewall.allowedTCPPorts = [ 80 ];
+
   sops.secrets.nix_priv.sopsFile = ./secrets.yaml;
   services.nix-serve = {
     enable = true;
