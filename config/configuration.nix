@@ -1,7 +1,12 @@
 { config, lib, pkgs, hostname, user, rebuild, ... }: {
-  # Enable flakes
   nix = {
     settings = {
+      substituters =
+        [ "http://nix.epsilon.tquelch.com" "https://cache.nixos.org/" ];
+      trusted-public-keys = [
+        "nix.epsilon.tquelch.com-1:YkLqk/hXEnt+WIVVef+qNwXNAoQOMqdNjOS4B2Mm5Tk="
+        "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+      ];
       experimental-features = [ "nix-command" "flakes" ];
       use-xdg-base-directories = true;
       trusted-users = [ "root" user ];
@@ -94,7 +99,7 @@
 
   documentation.man = {
     man-db.enable = true;
-    generateCaches = false;     # disabled because it takes a long time on rebuild
+    generateCaches = false; # disabled because it takes a long time on rebuild
   };
 
   services.locate.enable = true;
@@ -106,7 +111,8 @@
 
   # This is an annoying mix between home and non-home
   security.pam.services.hyprlock = { };
-  environment.pathsToLink = [ "/share/xdg-desktop-portal" "/share/applications" ];
+  environment.pathsToLink =
+    [ "/share/xdg-desktop-portal" "/share/applications" ];
 
   # use new dbus broker instead of old bus
   services.dbus.implementation = "broker";
