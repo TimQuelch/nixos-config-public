@@ -11,23 +11,10 @@
     extraCompatPackages = [ pkgs.proton-ge-bin ];
   };
 
-  networking.firewall.allowedTCPPorts = [ 80 ];
-
   sops.secrets.nix_priv.sopsFile = ./secrets.yaml;
-  services.nix-serve = {
+  modules.nix-cache = {
     enable = true;
-    secretKeyFile = config.sops.secrets.nix_priv.path;
-  };
-  services.nginx = {
-    enable = true;
-    recommendedProxySettings = true;
-    virtualHosts = {
-      "nix.epsilon.tquelch.com" = {
-        locations."/".proxyPass =
-          "http://${config.services.nix-serve.bindAddress}:${
-            toString config.services.nix-serve.port
-          }";
-      };
-    };
+    signingKeySecretFile = config.sops.secrets.nix_priv.path;
+    cacheHostName = "nix.epsilon.tquelch.com" ;
   };
 }
