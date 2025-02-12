@@ -109,6 +109,12 @@
 
   virtualisation.docker.enable = true;
 
+  systemd.oomd = {
+    enable = true;
+    enableRootSlice = true;
+    enableUserSlices = true;
+  };
+
   # This is an annoying mix between home and non-home
   security.pam.services.hyprlock = { };
   environment.pathsToLink =
