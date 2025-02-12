@@ -13,9 +13,9 @@ final: prev: {
 
     patches = [ ./0001-Override-chunk_size-for-upload.patch ];
 
-    cargoDeps = prevAttrs.cargoDeps.overrideAttrs (prev.lib.const {
+    cargoDeps = final.rustPlatform.fetchCargoVendor {
       inherit src;
-      outputHash = "sha256-KH0NrHrUcHc1DTWdeEtIuoFG86+mxtShDXMH+jXDJ/s=";
-    });
+      hash = "sha256-snCDGg7Nx3ckSPNFxvu8nhVr8SO3sjWIFA0WCRqH224=";
+    };
   });
 }
