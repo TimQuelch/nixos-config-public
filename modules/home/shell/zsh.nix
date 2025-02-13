@@ -37,9 +37,8 @@ in {
         }
       ];
       completionInit = ''
-        autoload bashcompinit && bashcompinit
         autoload -Uz compinit && compinit
-        complete -C '${pkgs.awscli2}/bin/aws_completer' aws
+        autoload bashcompinit && bashcompinit
       '';
       # Do this here instead of in a plugin so that it this config happens after
       # the fzf zsh eval. We want this to supercede it
