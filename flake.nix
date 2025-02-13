@@ -44,11 +44,8 @@
         pkgs = import nixpkgs {
           inherit system;
           config = { allowUnfree = true; };
-          overlays = (import ./overlays) ++ [
-            (final: prev: {
-              inherit (inputs.hyprswitch.packages.${prev.system}) hyprswitch;
-            })
-          ];
+          overlays = (import ./overlays)
+            ++ [ inputs.hyprswitch.overlays.default ];
         };
         nixOsFilter = pkgs.lib.filter (h: builtins.hasAttr "hardware" h);
         mkHosts = import ./hosts { inherit nixpkgs pkgs inputs; };
