@@ -31,6 +31,7 @@
       magic-wormhole
       gh
       awscli2
+      custom.bash-my-aws
       sshfs
     ];
     sessionVariables = { EDITOR = "vim"; };
