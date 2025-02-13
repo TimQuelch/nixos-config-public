@@ -46,7 +46,7 @@ let
         hostname =
           if builtins.hasAttr "hostname" args then args.hostname else name;
         user = if builtins.hasAttr "user" args then args.user else "timquelch";
-        extraArgs = { inherit inputs user hostname; };
+        extraArgs = { inherit inputs user hostname nixpkgs; };
         homeManagerModuleList = [
           ../config/home.nix
           ../modules/home
