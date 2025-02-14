@@ -79,7 +79,6 @@ in
 
     programs.z-lua = {
       enable = true;
-      enableZshIntegration = true;
       options = [
         "enhanced"
         "once"
@@ -87,9 +86,6 @@ in
       ];
     };
 
-    programs.fzf = {
-      enable = true;
-      enableZshIntegration = true;
-    };
+    programs.fzf.enable = true;
   };
 }
