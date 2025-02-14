@@ -1,4 +1,12 @@
-{ lib, config, pkgs, user, rebuild, ... }: {
+{
+  lib,
+  config,
+  pkgs,
+  user,
+  rebuild,
+  ...
+}:
+{
   # Setup secrets
   sops = {
     defaultSopsFile = ../secrets/user-secrets.yaml;
@@ -34,7 +42,9 @@
       custom.bash-my-aws
       sshfs
     ];
-    sessionVariables = { EDITOR = "vim"; };
+    sessionVariables = {
+      EDITOR = "vim";
+    };
   };
   fonts.fontconfig.enable = true;
 

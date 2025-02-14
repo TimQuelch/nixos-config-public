@@ -1,17 +1,20 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   cfg = config.modules.btrfs-maintenance;
 
-  escapeSystemdPath = path:
-    lib.replaceStrings [ "/" ] [ "-" ] (lib.removePrefix "/" path);
+  escapeSystemdPath = path: lib.replaceStrings [ "/" ] [ "-" ] (lib.removePrefix "/" path);
 
   mkMountPointServices = mountPoint: {
     "btrfs-balance-${escapeSystemdPath mountPoint}" = {
       description = "BTRFS Balance Service for ${mountPoint}";
       serviceConfig = {
         Type = "oneshot";
-        ExecStart =
-          "${pkgs.btrfs-progs}/bin/btrfs balance start -dusage=${toString cfg.balanceStartThreshold} -musage=${toString cfg.balanceStartThreshold} ${mountPoint}";
+        ExecStart = "${pkgs.btrfs-progs}/bin/btrfs balance start -dusage=${toString cfg.balanceStartThreshold} -musage=${toString cfg.balanceStartThreshold} ${mountPoint}";
         Nice = 19;
         IOSchedulingClass = "idle";
         IOSchedulingPriority = 7;
@@ -25,8 +28,7 @@ let
       description = "BTRFS Scrub Service for ${mountPoint}";
       serviceConfig = {
         Type = "oneshot";
-        ExecStart =
-          "${pkgs.btrfs-progs}/bin/btrfs scrub start -B ${mountPoint}";
+        ExecStart = "${pkgs.btrfs-progs}/bin/btrfs scrub start -B ${mountPoint}";
         Nice = 19;
         IOSchedulingClass = "idle";
         IOSchedulingPriority = 7;
@@ -55,7 +57,8 @@ let
     };
   };
 
-in {
+in
+{
   options.modules.btrfs-maintenance = {
     enable = lib.mkEnableOption "Automated BTRFS maintenance";
 

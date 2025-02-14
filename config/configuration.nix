@@ -1,4 +1,13 @@
-{ config, lib, pkgs, hostname, user, rebuild, ... }: {
+{
+  config,
+  lib,
+  pkgs,
+  hostname,
+  user,
+  rebuild,
+  ...
+}:
+{
   nix = {
     settings = {
       substituters = [
@@ -9,9 +18,15 @@
         "nix.alpha.tquelch.com-1:VP//Cf8i9AKmPBm+loX6T3rsXm9IoID7TApp7stR7Ys="
         "nix.epsilon.tquelch.com-1:YkLqk/hXEnt+WIVVef+qNwXNAoQOMqdNjOS4B2Mm5Tk="
       ];
-      experimental-features = [ "nix-command" "flakes" ];
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
       use-xdg-base-directories = true;
-      trusted-users = [ "root" user ];
+      trusted-users = [
+        "root"
+        user
+      ];
     };
     gc = {
       automatic = true;
@@ -39,7 +54,10 @@
     openFirewall = true;
     useRoutingFeatures = "client";
     authKeyFile = config.sops.secrets.tailscale_auth_key.path;
-    extraUpFlags = [ "--accept-dns" "--accept-routes" ];
+    extraUpFlags = [
+      "--accept-dns"
+      "--accept-routes"
+    ];
   };
 
   networking.nftables.enable = true;
@@ -88,8 +106,7 @@
   sops.secrets.user_password.neededForUsers = true;
   users.users.${user} = {
     isNormalUser = true;
-    extraGroups = ([ "wheel" ]
-      ++ (lib.optionals config.virtualisation.docker.enable [ "docker" ]));
+    extraGroups = ([ "wheel" ] ++ (lib.optionals config.virtualisation.docker.enable [ "docker" ]));
     hashedPasswordFile = config.sops.secrets.user_password.path;
     shell = pkgs.zsh;
   };
@@ -97,7 +114,11 @@
   programs.zsh.enable = true;
 
   # Defer nearly all packages to home manger configs
-  environment.systemPackages = with pkgs; [ rebuild vim tmux ];
+  environment.systemPackages = with pkgs; [
+    rebuild
+    vim
+    tmux
+  ];
 
   documentation.man = {
     man-db.enable = true;
@@ -119,8 +140,10 @@
 
   # This is an annoying mix between home and non-home
   security.pam.services.hyprlock = { };
-  environment.pathsToLink =
-    [ "/share/xdg-desktop-portal" "/share/applications" ];
+  environment.pathsToLink = [
+    "/share/xdg-desktop-portal"
+    "/share/applications"
+  ];
 
   # use new dbus broker instead of old bus
   services.dbus.implementation = "broker";

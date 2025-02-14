@@ -1,4 +1,10 @@
-{ config, lib, pkgs, ... }: {
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+{
   hardware.nvidia = {
     modesetting.enable = true;
     open = false;
@@ -33,6 +39,6 @@
   modules.nix-cache = {
     enable = true;
     signingKeySecretFile = config.sops.secrets.nix_priv.path;
-    cacheHostName = "nix.alpha.tquelch.com" ;
+    cacheHostName = "nix.alpha.tquelch.com";
   };
 }

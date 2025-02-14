@@ -1,4 +1,9 @@
-{ ... }: {
-  imports =
-    [ ./zswap.nix ./nixos-options.nix ./btrfs-maintenance.nix ./nix-cache.nix ];
+{ ... }:
+{
+  imports = [
+    ./zswap.nix
+    ./nixos-options.nix
+    ./btrfs-maintenance.nix
+    ./nix-cache.nix
+  ];
 }

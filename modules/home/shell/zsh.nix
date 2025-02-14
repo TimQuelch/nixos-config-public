@@ -1,4 +1,10 @@
-{ lib, pkgs, config, options, ... }:
+{
+  lib,
+  pkgs,
+  config,
+  options,
+  ...
+}:
 let
   cfg = config.modules.shell.zsh;
   customFzfCompletionDir = pkgs.fetchFromGitHub {
@@ -7,7 +13,8 @@ let
     rev = "11122590127ab62c51dd4bbfd0d432cee30f9984";
     sha256 = "sha256-ds+GgCTXXavaELCy0MxAGHTPp2MFoFohm/gPkQCRuXU=";
   };
-in {
+in
+{
   options.modules.shell.zsh = {
     enable = lib.mkEnableOption "zsh configs";
     customFzfTabCompletion = lib.mkOption {
@@ -42,17 +49,25 @@ in {
       '';
       # Do this here instead of in a plugin so that it this config happens after
       # the fzf zsh eval. We want this to supercede it
-      initExtra = (lib.optionalString cfg.customFzfTabCompletion ''
-        source ${customFzfCompletionDir}/zsh/fzf-zsh-completion.sh
-      '') + ''
-        autoload -z edit-command-line
-        zle -N edit-command-line
-        bindkey "^X^E" edit-command-line
-      '';
+      initExtra =
+        (lib.optionalString cfg.customFzfTabCompletion ''
+          source ${customFzfCompletionDir}/zsh/fzf-zsh-completion.sh
+        '')
+        + ''
+          autoload -z edit-command-line
+          zle -N edit-command-line
+          bindkey "^X^E" edit-command-line
+        '';
       history = {
         ignoreDups = true;
         ignoreSpace = true;
-        ignorePatterns = [ "cd" "z" "exit" "pwd" "ls" ];
+        ignorePatterns = [
+          "cd"
+          "z"
+          "exit"
+          "pwd"
+          "ls"
+        ];
         save = 100000;
         size = 100000;
         path = "${config.xdg.dataHome}/zsh/zsh_history";
@@ -62,7 +77,11 @@ in {
     programs.z-lua = {
       enable = true;
       enableZshIntegration = true;
-      options = [ "enhanced" "once" "fzf" ];
+      options = [
+        "enhanced"
+        "once"
+        "fzf"
+      ];
     };
 
     programs.fzf = {

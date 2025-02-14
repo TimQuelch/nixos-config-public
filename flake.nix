@@ -14,15 +14,14 @@
     hyprswitch.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = inputs@{ nixpkgs, flake-utils, ... }:
-    flake-utils.lib.eachDefaultSystem (system:
+  outputs =
+    inputs@{ nixpkgs, flake-utils, ... }:
+    flake-utils.lib.eachDefaultSystem (
+      system:
       let
-        consts = if (builtins.pathExists ./secrets/constants.nix) then
-          import ./secrets/constants.nix
-        else
-          { };
-        constOrDefault = name: default:
-          if (builtins.hasAttr name consts) then consts.${name} else default;
+        consts =
+          if (builtins.pathExists ./secrets/constants.nix) then import ./secrets/constants.nix else { };
+        constOrDefault = name: default: if (builtins.hasAttr name consts) then consts.${name} else default;
         # List of hosts to generate
         # `name` specifies which configuration to lookup
         # `hostname` defaults to name if not specified. lookup from env if we don't care
@@ -43,13 +42,15 @@
         ];
         pkgs = import nixpkgs {
           inherit system;
-          config = { allowUnfree = true; };
-          overlays = (import ./overlays)
-            ++ [ inputs.hyprswitch.overlays.default ];
+          config = {
+            allowUnfree = true;
+          };
+          overlays = (import ./overlays) ++ [ inputs.hyprswitch.overlays.default ];
         };
         nixOsFilter = pkgs.lib.filter (h: builtins.hasAttr "hardware" h);
         mkHosts = import ./hosts { inherit nixpkgs pkgs inputs; };
-      in {
+      in
+      {
         packages = {
           # Make nixos configs for only hosts that have hardware associated
           nixosConfigurations = mkHosts.mkNixOsHosts (nixOsFilter hosts);
@@ -60,7 +61,7 @@
           packages = with pkgs; [
             sops
             age
-            nixfmt-classic
+            nixfmt-rfc-style
             go
             gopls
             gotools
@@ -68,5 +69,6 @@
             git-filter-repo
           ];
         };
-      });
+      }
+    );
 }

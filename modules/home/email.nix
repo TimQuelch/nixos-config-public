@@ -1,9 +1,18 @@
-{ lib, config, pkgs, options, ... }:
+{
+  lib,
+  config,
+  pkgs,
+  options,
+  ...
+}:
 let
   cfg = config.modules.email;
   inherit (lib) mkEnableOption mkIf;
-in {
-  options.modules.email = { enable = mkEnableOption "email"; };
+in
+{
+  options.modules.email = {
+    enable = mkEnableOption "email";
+  };
 
   config = mkIf cfg.enable {
     sops.secrets.fastmail_token = { };

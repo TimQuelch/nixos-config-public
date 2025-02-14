@@ -1,8 +1,9 @@
 final: prev: {
   mujmap = prev.mujmap.overrideAttrs (prevAttrs: rec {
-    version = prev.lib.warnIf (prevAttrs.version != "0.2.0")
-      "upstream mujmap has been updated to ${prevAttrs.version}. Overlay may not be necessary anymore"
-      "latest";
+    version =
+      prev.lib.warnIf (prevAttrs.version != "0.2.0")
+        "upstream mujmap has been updated to ${prevAttrs.version}. Overlay may not be necessary anymore"
+        "latest";
 
     src = prev.fetchFromGitHub {
       owner = "elizagamedev";
