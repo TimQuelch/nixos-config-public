@@ -29,7 +29,8 @@ git add -A
 git commit -m "Populating redacted public facing stubs"
 
 printf "\nPulling exsisting public repo...\n"
-git remote add public git@github.com:TimQuelch/nixos-config-public
+git remote add public https://github.com/TimQuelch/nixos-config-public
+git remote set-url --push public git@github.com:TimQuelch/nixos-config-public
 git fetch public
 
 printf "\nRebasing onto public master branch...\n"
