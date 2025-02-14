@@ -43,6 +43,9 @@ in
           file = "p10k.zsh";
         }
       ];
+      initExtraBeforeCompInit = ''
+        eval $(bma-init)
+      '';
       completionInit = ''
         autoload -Uz compinit && compinit
         autoload bashcompinit && bashcompinit
