@@ -1,7 +1,17 @@
-{ config, lib, pkgs, ... }: {
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+{
   networking.wireless.iwd = {
     enable = true;
-    settings = { Settings = { AutoConnect = true; }; };
+    settings = {
+      Settings = {
+        AutoConnect = true;
+      };
+    };
   };
   networking.useDHCP = true;
   networking.wireless.userControlled.enable = true;
@@ -15,6 +25,6 @@
   modules.nix-cache = {
     enable = true;
     signingKeySecretFile = config.sops.secrets.nix_priv.path;
-    cacheHostName = "nix.epsilon.tquelch.com" ;
+    cacheHostName = "nix.epsilon.tquelch.com";
   };
 }

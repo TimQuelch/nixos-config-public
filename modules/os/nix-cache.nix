@@ -1,6 +1,13 @@
-{ config, lib, pkgs, ... }:
-let cfg = config.modules.nix-cache;
-in {
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+let
+  cfg = config.modules.nix-cache;
+in
+{
   options.modules.nix-cache = {
     enable = lib.mkEnableOption "nix store as binary cache";
     signingKeySecretFile = lib.mkOption { type = lib.types.str; };
@@ -21,9 +28,7 @@ in {
       virtualHosts = {
         ${cfg.cacheHostName} = {
           locations."/".proxyPass =
-            "http://${config.services.nix-serve.bindAddress}:${
-              toString config.services.nix-serve.port
-            }";
+            "http://${config.services.nix-serve.bindAddress}:${toString config.services.nix-serve.port}";
         };
       };
     };

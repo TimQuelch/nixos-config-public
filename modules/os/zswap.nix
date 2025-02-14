@@ -1,7 +1,17 @@
-{ lib, config, pkgs, options, ... }:
-let cfg = config.modules.os.zswap;
-in {
-  options.modules.os.zswap = { enable = lib.mkEnableOption "enable zswap"; };
+{
+  lib,
+  config,
+  pkgs,
+  options,
+  ...
+}:
+let
+  cfg = config.modules.os.zswap;
+in
+{
+  options.modules.os.zswap = {
+    enable = lib.mkEnableOption "enable zswap";
+  };
 
   config = lib.mkIf cfg.enable {
     systemd.services.zswap = {

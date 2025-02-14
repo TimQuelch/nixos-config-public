@@ -1,4 +1,10 @@
-{ lib, options, config, pkgs, ... }:
+{
+  lib,
+  options,
+  config,
+  pkgs,
+  ...
+}:
 let
   cfg = config.modules.gui.hyprland;
   defaultTerminal = "ghostty";
@@ -12,16 +18,30 @@ let
       mv "$tmpFile" "$1"
     '';
   };
-  screenshotScripts = map (mode:
-    pkgs.writeShellApplication {
-      name = "screenshot-${mode}";
-      runtimeInputs = (with pkgs; [ hyprshot swappy ]) ++ [ compress-png ];
-      text = ''
-        hyprshot --mode=${mode} --freeze --clipboard-only --raw | swappy -f - && false
-        fd --changed-within 5s . "${config.xdg.userDirs.pictures}" -x compress-png {}
-      '';
-    }) [ "window" "region" ];
-in {
+  screenshotScripts =
+    map
+      (
+        mode:
+        pkgs.writeShellApplication {
+          name = "screenshot-${mode}";
+          runtimeInputs =
+            (with pkgs; [
+              hyprshot
+              swappy
+            ])
+            ++ [ compress-png ];
+          text = ''
+            hyprshot --mode=${mode} --freeze --clipboard-only --raw | swappy -f - && false
+            fd --changed-within 5s . "${config.xdg.userDirs.pictures}" -x compress-png {}
+          '';
+        }
+      )
+      [
+        "window"
+        "region"
+      ];
+in
+{
 
   options.modules.gui.hyprland = {
     enable = lib.mkEnableOption "hyprland config";
@@ -35,15 +55,17 @@ in {
   config = lib.mkIf cfg.enable {
     wayland.windowManager.hyprland.enable = true;
 
-    home.packages = (with pkgs; [
-      wofi
-      polkit-kde-agent
-      xwaylandvideobridge
-      nwg-displays
-      wl-clipboard
-      hyprswitch
-      brightnessctl
-    ]) ++ screenshotScripts;
+    home.packages =
+      (with pkgs; [
+        wofi
+        polkit-kde-agent
+        xwaylandvideobridge
+        nwg-displays
+        wl-clipboard
+        hyprswitch
+        brightnessctl
+      ])
+      ++ screenshotScripts;
 
     wayland.windowManager.hyprland.settings = {
       # Run some commands as  systemd transient serivces so we get logs in journal
@@ -53,44 +75,54 @@ in {
         "systemd-run --user --wait hyprswitch init"
       ];
       "$mod" = "SUPER";
-      bind = [
-        # Control
-        "$mod, Q, killactive"
-        "$mod, V, togglefloating"
-        "$mod, P, pseudo"
-        "$mod, J, togglesplit"
-        "$mod, H, movefocus, l"
-        "$mod, L, movefocus, r"
-        "$mod, J, movefocus, d"
-        "$mod, K, movefocus, u"
+      bind =
+        [
+          # Control
+          "$mod, Q, killactive"
+          "$mod, V, togglefloating"
+          "$mod, P, pseudo"
+          "$mod, J, togglesplit"
+          "$mod, H, movefocus, l"
+          "$mod, L, movefocus, r"
+          "$mod, J, movefocus, d"
+          "$mod, K, movefocus, u"
 
-        "$mod, TAB, exec, hyprswitch gui --mod-key super_l --key tab --close mod-key-release --switch-type workspace && hyprswitch dispatch"
+          "$mod, TAB, exec, hyprswitch gui --mod-key super_l --key tab --close mod-key-release --switch-type workspace && hyprswitch dispatch"
 
-        # Special workspace
-        "$mod, S, togglespecialworkspace, magic"
-        "$mod SHIFT, S, movetoworkspace, special:magic"
+          # Special workspace
+          "$mod, S, togglespecialworkspace, magic"
+          "$mod SHIFT, S, movetoworkspace, special:magic"
 
-        # Screenshots
-        "$mod, PRINT, exec, screenshot-region"
-        "$mod SHIFT, PRINT, exec, screenshot-window"
+          # Screenshots
+          "$mod, PRINT, exec, screenshot-region"
+          "$mod SHIFT, PRINT, exec, screenshot-window"
 
-        # Programs
-        "$mod, C, exec, firefox"
-        "$mod, R, exec, wofi --show drun"
-        "$mod, RETURN, exec, ${cfg.terminal}"
-        "$mod, T, exec, ${cfg.terminal}"
+          # Programs
+          "$mod, C, exec, firefox"
+          "$mod, R, exec, wofi --show drun"
+          "$mod, RETURN, exec, ${cfg.terminal}"
+          "$mod, T, exec, ${cfg.terminal}"
 
-        # fn keys
-        ", XF86MonBrightnessUp, exec, brightnessctl set '+15%'"
-        ", XF86MonBrightnessDown, exec, brightnessctl set '15%-'"
-      ] ++ (builtins.concatLists (builtins.genList (x:
-        let
-          ws = let c = (x + 1) / nWorkspaces;
-          in builtins.toString (x + 1 - (c * nWorkspaces));
-        in [
-          "$mod, ${ws}, workspace, ${toString (x + 1)}"
-          "$mod SHIFT, ${ws}, movetoworkspace, ${toString (x + 1)}"
-        ]) nWorkspaces));
+          # fn keys
+          ", XF86MonBrightnessUp, exec, brightnessctl set '+15%'"
+          ", XF86MonBrightnessDown, exec, brightnessctl set '15%-'"
+        ]
+        ++ (builtins.concatLists (
+          builtins.genList (
+            x:
+            let
+              ws =
+                let
+                  c = (x + 1) / nWorkspaces;
+                in
+                builtins.toString (x + 1 - (c * nWorkspaces));
+            in
+            [
+              "$mod, ${ws}, workspace, ${toString (x + 1)}"
+              "$mod SHIFT, ${ws}, movetoworkspace, ${toString (x + 1)}"
+            ]
+          ) nWorkspaces
+        ));
       bindm = [
         # LMB to move, RMB to resize
         "$mod, mouse:272, movewindow"
@@ -103,7 +135,9 @@ in {
         "maxsize 1 1, class:^(xwaylandvideobridge)$"
         "noblur, class:^(xwaylandvideobridge)$"
       ];
-      xwayland = { force_zero_scaling = true; };
+      xwayland = {
+        force_zero_scaling = true;
+      };
       source = "${config.xdg.configHome}/hypr/monitors.conf";
       animation = [
         "windows, 1, 2, default, popin"
@@ -121,7 +155,13 @@ in {
       height = 30;
       modules-left = [ "hyprland/workspaces" ];
       modules-center = [ "clock" ];
-      modules-right = [ "network" "cpu" "memory" "battery" "tray" ];
+      modules-right = [
+        "network"
+        "cpu"
+        "memory"
+        "battery"
+        "tray"
+      ];
       network = {
         format-wifi = "{ifname}: {essid} ({signalStrength}%) ";
         format-ethernet = "{ifname}: {ipaddr}/{cidr} 󰈁";
@@ -147,14 +187,18 @@ in {
         format-plugged = "Bat {capacity}%";
         format-alt = "{time}";
       };
-      clock = { format = "{:%a %Y-%m-%d %H:%M}"; };
+      clock = {
+        format = "{:%a %Y-%m-%d %H:%M}";
+      };
     };
     programs.waybar.style = ./waybar.css;
 
     programs.hyprlock = {
       enable = true;
       settings = {
-        general = { grace = 10; };
+        general = {
+          grace = 10;
+        };
         background = {
           path = "screenshot";
           blur_passes = 2;

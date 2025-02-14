@@ -8,12 +8,9 @@ final: prev: {
       (prev.python3Packages.llama-index-embeddings-huggingface.override {
         # the llama-index-core dependency requires 'spacy' which fails to build because of some
         # dep version issue. This simply removes that dependency; it doesn't seem to actually be required.
-        llama-index-core =
-          prev.python3Packages.llama-index-core.overridePythonAttrs
-          (coreAttrs: {
-            dependencies = builtins.filter (dep: dep.pname != "spacy")
-              coreAttrs.dependencies;
-          });
+        llama-index-core = prev.python3Packages.llama-index-core.overridePythonAttrs (coreAttrs: {
+          dependencies = builtins.filter (dep: dep.pname != "spacy") coreAttrs.dependencies;
+        });
       })
     ];
   });

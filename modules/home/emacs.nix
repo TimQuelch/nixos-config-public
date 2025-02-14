@@ -1,4 +1,10 @@
-{ lib, config, pkgs, options, ... }:
+{
+  lib,
+  config,
+  pkgs,
+  options,
+  ...
+}:
 let
   cfg = config.modules.emacs;
 
@@ -10,7 +16,10 @@ let
   };
   init-emacs-config-bin = pkgs.writeShellApplication {
     name = "init-emacs-config";
-    runtimeInputs = [ pkgs.git doom-bin ];
+    runtimeInputs = [
+      pkgs.git
+      doom-bin
+    ];
     text = ''
       doomdir="$HOME/.doom.d"
       emacsdir="$HOME/.emacs.d"
@@ -29,8 +38,11 @@ let
   };
 
   inherit (lib) mkEnableOption mkIf;
-in {
-  options.modules.emacs = { enable = mkEnableOption "emacs"; };
+in
+{
+  options.modules.emacs = {
+    enable = mkEnableOption "emacs";
+  };
 
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
@@ -50,7 +62,13 @@ in {
       zstd
 
       # spell check
-      (aspellWithDicts (ds: with ds; [ en en-computers en-science ]))
+      (aspellWithDicts (
+        ds: with ds; [
+          en
+          en-computers
+          en-science
+        ]
+      ))
 
       # org roam and lookup
       sqlite
@@ -64,9 +82,6 @@ in {
 
       # treemacs git
       python3
-
-      # nix mode
-      nixfmt-classic
 
       # utils
       shellcheck
@@ -88,7 +103,7 @@ in {
       clang-tools
       cmake-format
       dprint
-      nixfmt-classic
+      nixfmt-rfc-style
       nodePackages.prettier
       shfmt
       stylua

@@ -1,10 +1,19 @@
-{ lib, config, options, pkgs, ... }:
+{
+  lib,
+  config,
+  options,
+  pkgs,
+  ...
+}:
 let
   cfg = config.modules.dirs;
   homeDir = config.home.homeDirectory;
   inherit (lib) mkEnableOption mkIf;
-in {
-  options.modules.dirs = { enable = mkEnableOption "xdg dirs"; };
+in
+{
+  options.modules.dirs = {
+    enable = mkEnableOption "xdg dirs";
+  };
 
   config = mkIf cfg.enable {
 

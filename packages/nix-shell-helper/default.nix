@@ -1,4 +1,7 @@
-{ writeShellApplication, registry ? "nixpkgs" }:
+{
+  writeShellApplication,
+  registry ? "nixpkgs",
+}:
 writeShellApplication {
   name = "ns";
   text = ''

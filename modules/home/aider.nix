@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
   cfg = config.modules.aider;
@@ -22,7 +27,8 @@ let
       chmod 600 "$ENV_FILE"
     '';
   };
-in {
+in
+{
   options.modules.aider = {
     enable = lib.mkEnableOption "aider configuration";
     package = lib.mkOption {
@@ -58,7 +64,9 @@ in {
         ExecStart = "${lib.getExe updateEnvScript}";
       };
 
-      Install = { WantedBy = [ "default.target" ]; };
+      Install = {
+        WantedBy = [ "default.target" ];
+      };
     };
   };
 }

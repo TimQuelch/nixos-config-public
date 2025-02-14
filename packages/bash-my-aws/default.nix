@@ -1,5 +1,14 @@
-{ lib, stdenv, fetchFromGitHub, awscli2, jq, unixtools, bashInteractive
-, installShellFiles, makeWrapper }:
+{
+  lib,
+  stdenv,
+  fetchFromGitHub,
+  awscli2,
+  jq,
+  unixtools,
+  bashInteractive,
+  installShellFiles,
+  makeWrapper,
+}:
 stdenv.mkDerivation {
   name = "bash-my-aws";
 
@@ -10,7 +19,11 @@ stdenv.mkDerivation {
     hash = "sha256-PR52T6XCrakQsBOJXf0PaYpYE5oMcIz5UDA4I9B7C38=";
   };
 
-  nativeBuildInputs = [ bashInteractive installShellFiles makeWrapper ];
+  nativeBuildInputs = [
+    bashInteractive
+    installShellFiles
+    makeWrapper
+  ];
 
   patches = [ ./0001-Update-paths-placeholders.patch ];
 
@@ -43,7 +56,12 @@ stdenv.mkDerivation {
 
   postFixup = ''
     wrapProgram $out/bin/bma --prefix PATH : ${
-      lib.makeBinPath [ awscli2 jq unixtools.column bashInteractive ]
+      lib.makeBinPath [
+        awscli2
+        jq
+        unixtools.column
+        bashInteractive
+      ]
     }
   '';
 }
