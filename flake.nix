@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs-bash-my-aws.url = "github:TimQuelch/nixpkgs/bash-my-aws";
     flake-utils.url = "github:numtide/flake-utils";
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
@@ -15,7 +16,12 @@
   };
 
   outputs =
-    inputs@{ nixpkgs, flake-utils, ... }:
+    inputs@{
+      nixpkgs,
+      nixpkgs-bash-my-aws,
+      flake-utils,
+      ...
+    }:
     flake-utils.lib.eachDefaultSystem (
       system:
       let
@@ -45,7 +51,12 @@
           config = {
             allowUnfree = true;
           };
-          overlays = (import ./overlays) ++ [ inputs.hyprswitch.overlays.default ];
+          overlays = (import ./overlays) ++ [
+            inputs.hyprswitch.overlays.default
+            (final: prev: {
+              bash-my-aws = nixpkgs-bash-my-aws.legacyPackages.${final.system}.bash-my-aws;
+            })
+          ];
         };
         nixOsFilter = pkgs.lib.filter (h: builtins.hasAttr "hardware" h);
         mkHosts = import ./hosts { inherit nixpkgs pkgs inputs; };

@@ -114,6 +114,22 @@
         "type": "github"
       }
     },
+    "nixpkgs-bash-my-aws": {
+      "locked": {
+        "lastModified": 1739502787,
+        "narHash": "sha256-9eGHlkz3s3bHb9gCag8fDORtVkXG8xsXtWfD+ikUlCo=",
+        "owner": "TimQuelch",
+        "repo": "nixpkgs",
+        "rev": "923eb6c4706dc4998cb2e6d96651a17e328f77a0",
+        "type": "github"
+      },
+      "original": {
+        "owner": "TimQuelch",
+        "ref": "bash-my-aws",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "nixpkgs-lib": {
       "locked": {
         "lastModified": 1735774519,
@@ -133,6 +149,7 @@
         "hyprswitch": "hyprswitch",
         "nix-index-database": "nix-index-database",
         "nixpkgs": "nixpkgs",
+        "nixpkgs-bash-my-aws": "nixpkgs-bash-my-aws",
         "sops-nix": "sops-nix"
       }
     },
