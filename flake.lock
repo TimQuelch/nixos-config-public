@@ -116,11 +116,11 @@
     },
     "nixpkgs-bash-my-aws": {
       "locked": {
-        "lastModified": 1739502787,
-        "narHash": "sha256-9eGHlkz3s3bHb9gCag8fDORtVkXG8xsXtWfD+ikUlCo=",
+        "lastModified": 1739512396,
+        "narHash": "sha256-zG87vA08cnbv/NZ5B3lq7uzXMGb1xFQKlGoOSx8XmdE=",
         "owner": "TimQuelch",
         "repo": "nixpkgs",
-        "rev": "923eb6c4706dc4998cb2e6d96651a17e328f77a0",
+        "rev": "a8d4b83956479f183cfb7b086f57d7a8c41179d0",
         "type": "github"
       },
       "original": {
