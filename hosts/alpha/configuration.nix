@@ -26,4 +26,12 @@
     enable = false;
     acceleration = "cuda";
   };
+
+  sops.secrets.k3s_token = { };
+  services.k3s = {
+    enable = true;
+    clusterInit = true;
+    tokenFile = config.sops.secrets.k3s_token.path;
+    extraFlags = [ "--flannel-backend wireguard-native" ];
+  };
 }
