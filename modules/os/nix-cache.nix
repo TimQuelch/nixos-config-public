@@ -6,6 +6,7 @@
 }:
 let
   cfg = config.modules.nix-cache;
+  traefikHttp = config.services.traefik.dynamicConfigOptions.http;
 in
 {
   options.modules.nix-cache = {
@@ -15,22 +16,17 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    networking.firewall.allowedTCPPorts = [ 80 ];
-
     services.nix-serve = {
       enable = true;
       secretKeyFile = cfg.signingKeySecretFile;
     };
 
-    services.nginx = {
-      enable = true;
-      recommendedProxySettings = true;
-      virtualHosts = {
-        ${cfg.cacheHostName} = {
-          locations."/".proxyPass =
-            "http://${config.services.nix-serve.bindAddress}:${toString config.services.nix-serve.port}";
-        };
-      };
+    services.traefik.dynamicConfigOptions.http.routers.nix-serve = {
+      rule = "Host(`${cfg.cacheHostName}`)";
+      service = "nix-serve";
     };
+    services.traefik.dynamicConfigOptions.http.services.nix-serve.loadBalancer.servers = [
+      { url = "http://localhost:${toString config.services.nix-serve.port}"; }
+    ];
   };
 }
