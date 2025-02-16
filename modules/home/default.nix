@@ -10,5 +10,6 @@
     ./git.nix
     ./dirs.nix
     ./aider.nix
+    ./nix-shell-helper.nix
   ];
 }
