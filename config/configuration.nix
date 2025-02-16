@@ -100,7 +100,7 @@
   sops.secrets.user_password.neededForUsers = true;
   users.users.${user} = {
     isNormalUser = true;
-    extraGroups = ([ "wheel" ] ++ (lib.optionals config.virtualisation.docker.enable [ "docker" ]));
+    extraGroups = [ "wheel" ];
     hashedPasswordFile = config.sops.secrets.user_password.path;
     shell = pkgs.zsh;
   };
@@ -124,7 +124,11 @@
   modules.os.zswap.enable = true;
   modules.os.nixos-options.enable = false;
 
-  virtualisation.docker.enable = true;
+  virtualisation.podman = {
+    enable = true;
+    dockerCompat = true;
+    autoPrune.enable = true;
+  };
 
   systemd.oomd = {
     enable = true;
