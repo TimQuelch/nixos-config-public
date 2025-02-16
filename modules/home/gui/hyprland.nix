@@ -53,7 +53,10 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    wayland.windowManager.hyprland.enable = true;
+    wayland.windowManager.hyprland = {
+      enable = true;
+      systemd.enable = false;   # Disabled because this conflicts with nixos's uwsm integration
+    };
 
     home.packages =
       (with pkgs; [
@@ -87,25 +90,25 @@ in
           "$mod, J, movefocus, d"
           "$mod, K, movefocus, u"
 
-          "$mod, TAB, exec, hyprswitch gui --mod-key super_l --key tab --close mod-key-release --switch-type workspace && hyprswitch dispatch"
+          "$mod, TAB, exec, uwsm app -- hyprswitch gui --mod-key super_l --key tab --close mod-key-release --switch-type workspace && hyprswitch dispatch"
 
           # Special workspace
           "$mod, S, togglespecialworkspace, magic"
           "$mod SHIFT, S, movetoworkspace, special:magic"
 
           # Screenshots
-          "$mod, PRINT, exec, screenshot-region"
-          "$mod SHIFT, PRINT, exec, screenshot-window"
+          "$mod, PRINT, exec, uwsm app -- screenshot-region"
+          "$mod SHIFT, PRINT, exec, uwsm app -- screenshot-window"
 
           # Programs
-          "$mod, C, exec, firefox"
-          "$mod, R, exec, wofi --show drun"
-          "$mod, RETURN, exec, ${cfg.terminal}"
-          "$mod, T, exec, ${cfg.terminal}"
+          "$mod, C, exec, uwsm app -- firefox"
+          "$mod, R, exec, uwsm app -- $(wofi --show drun --define=drun-print_desktop_file=true)"
+          "$mod, RETURN, exec, uwsm app -- ${cfg.terminal}"
+          "$mod, T, exec, uwsm app -- ${cfg.terminal}"
 
           # fn keys
-          ", XF86MonBrightnessUp, exec, brightnessctl set '+15%'"
-          ", XF86MonBrightnessDown, exec, brightnessctl set '15%-'"
+          ", XF86MonBrightnessUp, exec, uwsm app -- brightnessctl set '+15%'"
+          ", XF86MonBrightnessDown, exec, uwsm app -- brightnessctl set '15%-'"
         ]
         ++ (builtins.concatLists (
           builtins.genList (
@@ -243,10 +246,6 @@ in
 
     # services.hypridle.enable = true;
     services.mako.enable = true;
-
-    xdg.portal.enable = true;
-    xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-hyprland ];
-    xdg.portal.configPackages = [ pkgs.xdg-desktop-portal-hyprland ];
 
     xdg.configFile."swappy/config".text = ''
       [Default]
