@@ -100,33 +100,17 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1739214665,
-        "narHash": "sha256-26L8VAu3/1YRxS8MHgBOyOM8xALdo6N0I04PgorE7UM=",
+        "lastModified": 1739781473,
+        "narHash": "sha256-6/lgN7ax+Imwxs40tPHGqH7S2xKf6YMJjvLuMeRlIZk=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "64e75cd44acf21c7933d61d7721e812eac1b5a0a",
+        "rev": "d21dc08cf76045f12af9fff8eb3a0440b291228b",
         "type": "github"
       },
       "original": {
         "owner": "nixos",
-        "ref": "nixos-unstable",
         "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
-    "nixpkgs-bash-my-aws": {
-      "locked": {
-        "lastModified": 1739512396,
-        "narHash": "sha256-zG87vA08cnbv/NZ5B3lq7uzXMGb1xFQKlGoOSx8XmdE=",
-        "owner": "TimQuelch",
-        "repo": "nixpkgs",
-        "rev": "a8d4b83956479f183cfb7b086f57d7a8c41179d0",
-        "type": "github"
-      },
-      "original": {
-        "owner": "TimQuelch",
-        "ref": "bash-my-aws",
-        "repo": "nixpkgs",
+        "rev": "d21dc08cf76045f12af9fff8eb3a0440b291228b",
         "type": "github"
       }
     },
@@ -149,7 +133,6 @@
         "hyprswitch": "hyprswitch",
         "nix-index-database": "nix-index-database",
         "nixpkgs": "nixpkgs",
-        "nixpkgs-bash-my-aws": "nixpkgs-bash-my-aws",
         "sops-nix": "sops-nix"
       }
     },
