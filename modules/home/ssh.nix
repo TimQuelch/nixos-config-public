@@ -50,7 +50,7 @@ in
           };
           "theta-boot" = lib.hm.dag.entryBefore [ "default" ] {
             host = "theta-boot";
-            hostname = "192.168.20.99";
+            hostname = "192.168.0.99";
             user = "root";
             port = 123;
             identitiesOnly = true;
