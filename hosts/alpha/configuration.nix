@@ -34,12 +34,4 @@
     enable = true;
     acceleration = "cuda";
   };
-
-  sops.secrets.nix_priv.sopsFile = ./secrets.yaml;
-  modules.traefik.enable = true;
-  modules.nix-cache = {
-    enable = true;
-    signingKeySecretFile = config.sops.secrets.nix_priv.path;
-    cacheHostName = "nix.alpha.tquelch.com";
-  };
 }

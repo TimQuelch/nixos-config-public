@@ -6,27 +6,33 @@
 }:
 let
   cfg = config.modules.nix-cache;
-  traefikHttp = config.services.traefik.dynamicConfigOptions.http;
 in
 {
   options.modules.nix-cache = {
-    enable = lib.mkEnableOption "nix store as binary cache";
-    signingKeySecretFile = lib.mkOption { type = lib.types.str; };
-    cacheHostName = lib.mkOption { type = lib.types.str; };
+    enable = lib.mkEnableOption "nix store binary cache";
   };
 
   config = lib.mkIf cfg.enable {
-    services.nix-serve = {
-      enable = true;
-      secretKeyFile = cfg.signingKeySecretFile;
-    };
 
-    services.traefik.dynamicConfigOptions.http.routers.nix-serve = {
-      rule = "Host(`${cfg.cacheHostName}`)";
-      service = "nix-serve";
+    sops.secrets.nix-cache-jwt.sopsFile = ../../secrets/nix-cache.yaml;
+
+    sops.templates.nix-cache-netrc.content = ''
+      machine nix.theta.tquelch.com
+      password ${config.sops.placeholder.nix-cache-jwt}
+    '';
+
+    environment.etc."attic/config.toml".text = ''
+      default-server = "theta"
+
+      [servers.theta]
+      endpoint = "https://nix.theta.tquelch.com"
+      token_file = "${config.sops.secrets.nix-cache-jwt.path}"
+    '';
+
+    nix.settings = {
+      substituters = [ "https://nix.theta.tquelch.com/attic/theta" ];
+      trusted-public-keys = [ "theta:bEYWsk8RIf6epx3nKxVjn+hWWOFyX6rlOqBLqBUBTOw=" ];
+      netrc-file = config.sops.templates.nix-cache-netrc.path;
     };
-    services.traefik.dynamicConfigOptions.http.services.nix-serve.loadBalancer.servers = [
-      { url = "http://localhost:${toString config.services.nix-serve.port}"; }
-    ];
   };
 }

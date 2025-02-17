@@ -10,14 +10,6 @@
 {
   nix = {
     settings = {
-      substituters = [
-        "http://nix.alpha.tquelch.com"
-        "http://nix.epsilon.tquelch.com"
-      ];
-      trusted-public-keys = [
-        "nix.alpha.tquelch.com-1:VP//Cf8i9AKmPBm+loX6T3rsXm9IoID7TApp7stR7Ys="
-        "nix.epsilon.tquelch.com-1:YkLqk/hXEnt+WIVVef+qNwXNAoQOMqdNjOS4B2Mm5Tk="
-      ];
       experimental-features = [
         "nix-command"
         "flakes"
@@ -123,6 +115,7 @@
 
   modules.os.zswap.enable = true;
   modules.os.nixos-options.enable = false;
+  modules.nix-cache.enable = true;
 
   virtualisation.podman = {
     enable = true;
