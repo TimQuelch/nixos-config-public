@@ -37,7 +37,10 @@ in
 
     systemd.services.attic-nix-cache-upload = {
       environment.XDG_CONFIG_HOME = "/etc";
-      script = "${lib.getExe pkgs.attic-client} watch-store theta";
+      script = ''
+        ${lib.getExe pkgs.attic-client} push theta /run/current-system
+        ${lib.getExe pkgs.attic-client} watch-store theta
+      '';
       wantedBy = [ "multi-user.target" ];
       wants = [ "network-online.target" ];
       serviceConfig = {
