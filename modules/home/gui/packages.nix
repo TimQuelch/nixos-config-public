@@ -21,6 +21,7 @@ in
       zoom-us
       pwvucontrol
       discord
+      libreoffice
     ];
   };
 }
