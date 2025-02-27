@@ -45,6 +45,8 @@ in
 
     home.file.".aider.conf.yml" = {
       text = ''
+        model: anthropic/claude-3-7-sonnet-latest
+        weak-model: anthropic/claude-3-7-haiku-latest
         cache-prompts: true
         stream: false
         dark-mode: true
