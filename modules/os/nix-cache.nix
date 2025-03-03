@@ -31,7 +31,7 @@ in
 
     nix.settings = {
       substituters = [ "https://nix.theta.tquelch.com/theta" ];
-      trusted-public-keys = [ "theta:bEYWsk8RIf6epx3nKxVjn+hWWOFyX6rlOqBLqBUBTOw=" ];
+      trusted-public-keys = [ "theta:vy3RV3IOlEGdaQjv5Z/6fZT0HLrLzLdnyMzBNOEgXDM==" ];
       netrc-file = config.sops.templates.nix-cache-netrc.path;
     };
 
