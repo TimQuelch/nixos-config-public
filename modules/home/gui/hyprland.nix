@@ -61,8 +61,8 @@ in
     home.packages =
       (with pkgs; [
         wofi
-        polkit-kde-agent
-        xwaylandvideobridge
+        kdePackages.polkit-kde-agent-1
+        kdePackages.xwaylandvideobridge
         nwg-displays
         wl-clipboard
         hyprswitch
