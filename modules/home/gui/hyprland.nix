@@ -55,13 +55,13 @@ in
   config = lib.mkIf cfg.enable {
     wayland.windowManager.hyprland = {
       enable = true;
-      systemd.enable = false;   # Disabled because this conflicts with nixos's uwsm integration
+      systemd.enable = false; # Disabled because this conflicts with nixos's uwsm integration
     };
 
     home.packages =
       (with pkgs; [
         wofi
-        kdePackages.polkit-kde-agent-1
+        hyprpolkitagent
         kdePackages.xwaylandvideobridge
         nwg-displays
         wl-clipboard
@@ -69,6 +69,10 @@ in
         brightnessctl
       ])
       ++ screenshotScripts;
+
+    home.activation.hyprpolkitagent =
+      lib.hm.dag.entryBetween [ "linkGeneration" ] [ "writeBoundary" ]
+        ''run ${config.systemd.user.systemctlPath} --user enable hyprpolkitagent.service'';
 
     wayland.windowManager.hyprland.settings = {
       # Run some commands as  systemd transient serivces so we get logs in journal
