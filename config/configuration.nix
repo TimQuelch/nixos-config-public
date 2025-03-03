@@ -116,7 +116,7 @@
 
   modules.os.zswap.enable = true;
   modules.os.nixos-options.enable = false;
-  modules.nix-cache.enable = false;
+  modules.nix-cache.enable = true;
 
   virtualisation = {
     oci-containers.backend = "podman";
