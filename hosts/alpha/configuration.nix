@@ -5,15 +5,7 @@
   ...
 }:
 {
-  hardware.nvidia = {
-    modesetting.enable = true;
-    open = false;
-    nvidiaSettings = true;
-  };
-
   services.libinput.mouse.accelProfile = "flat";
-
-  services.xserver.videoDrivers = [ "nvidia" ];
 
   networking.wireless.iwd = {
     enable = true;
@@ -31,7 +23,7 @@
   };
 
   services.ollama = {
-    enable = true;
+    enable = false;
     acceleration = "cuda";
   };
 }

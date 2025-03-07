@@ -82,4 +82,14 @@
 
   virtualisation.docker.storageDriver = "btrfs";
   virtualisation.containers.storage.settings.storage.driver = "btrfs";
+
+  hardware.nvidia = {
+    modesetting.enable = true;
+    open = false;
+    nvidiaSettings = true;
+    forceFullCompositionPipeline = true;
+    powerManagement.enable = true;
+  };
+
+  services.xserver.videoDrivers = [ "nvidia" ];
 }
