@@ -75,6 +75,7 @@ in
       rust-analyzer
       gopls
       yaml-language-server
+      terraform-ls
 
       # formatters
       black
