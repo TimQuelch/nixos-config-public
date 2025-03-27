@@ -35,7 +35,7 @@ git fetch public
 
 printf "\nRebasing onto public master branch...\n"
 git config advice.skippedCherryPicks false
-git rebase --verbose public/master
+git rebase --verbose --committer-date-is-author-date public/master
 
 # Count new commits
 NEW_COMMITS=$(git rev-list --count "public/master"..HEAD)
