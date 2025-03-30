@@ -7,6 +7,33 @@
 
 let
   cfg = config.modules.aider;
+
+  updateAnthropicEnv = pkgs.writeShellApplication {
+    name = "update-anthropic-env";
+    runtimeInputs = [
+      pkgs.gnugrep
+      pkgs.gnused
+    ];
+    text = ''
+      ENV_FILE="$HOME/.env"
+      KEY_NAME="ANTHROPIC_API_KEY"
+      NEW_VALUE=$(cat ${config.sops.secrets.anthropic_key.path})
+
+      if [ ! -f "$ENV_FILE" ]; then
+        echo "Creating new file '$ENV_FILE' with anthropic key"
+        echo "$KEY_NAME=$NEW_VALUE" > "$ENV_FILE"
+        chmod 600 "$ENV_FILE"
+      else
+        if grep -q "^$KEY_NAME=" "$ENV_FILE"; then
+          echo "Updating existing key in '$ENV_FILE' with anthropic key"
+          sed -i "s|^$KEY_NAME=.*|$KEY_NAME=$NEW_VALUE|" "$ENV_FILE"
+        else
+          echo "Creating new key in '$ENV_FILE' with anthropic key"
+          echo "$KEY_NAME=$NEW_VALUE" >> "$ENV_FILE"
+        fi
+      fi
+    '';
+  };
 in
 {
   options.modules.aider = {
@@ -35,21 +62,17 @@ in
       '';
     };
 
-    home.activation.anthropic-env = lib.hm.dag.entryAfter [ "sops-nix" ] ''
-      ENV_FILE="$HOME/.env"
-      KEY_NAME="ANTHROPIC_API_KEY"
-      NEW_VALUE=$(cat ${config.sops.secrets.anthropic_key.path})
-
-      if [ ! -f "$ENV_FILE" ]; then
-        run echo "$KEY_NAME=$NEW_VALUE" > "$ENV_FILE"
-      else
-        if grep -q "^$KEY_NAME=" "$ENV_FILE"; then
-          run sed -i "s|^$KEY_NAME=.*|$KEY_NAME=$NEW_VALUE|" "$ENV_FILE"
-        else
-          run echo "$KEY_NAME=$NEW_VALUE" >> "$ENV_FILE"
-        fi
-      fi
-      run chmod 600 "$ENV_FILE"
-    '';
+    systemd.user.services.update-anthropic-env = {
+      Unit = {
+        Description = "anthropic env activation";
+        After = [ "sops-nix.service" ];
+        Wants = [ "sops-nix.service" ];
+      };
+      Service = {
+        Type = "oneshot";
+        ExecStart = lib.getExe updateAnthropicEnv;
+      };
+      Install.WantedBy = [ "default.target" ];
+    };
   };
 }
