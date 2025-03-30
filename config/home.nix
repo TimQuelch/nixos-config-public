@@ -14,6 +14,22 @@
     age.generateKey = true;
   };
 
+  # Configure nix in user config as well as root so that we have user-level garbage collection. This
+  # ensures old home manager profiles are cleaned up
+  nix = {
+    settings = {
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
+    };
+    gc = {
+      automatic = true;
+      frequency = "weekly";
+      options = "--delete-older-than 7d";
+    };
+  };
+
   home = {
     username = user;
     homeDirectory = "/home/${user}";
