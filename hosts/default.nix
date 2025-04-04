@@ -9,7 +9,7 @@ let
     pkgs.writeShellApplication {
       name = "nr";
       text = ''
-        ${builder} switch --flake "$HOME/nixos-config#$(${pkgs.hostname}/bin/hostname)" "$@"
+        ${builder} switch --flake "$HOME/nixos-config#$(${pkgs.hostname}/bin/hostname)-${pkgs.system}" "$@"
       '';
     };
   rebuildNixosConfig = mkRebuilder "sudo nixos-rebuild";
@@ -99,7 +99,7 @@ let
           };
         in
         {
-          name = hostname;
+          name = "${hostname}-${pkgs.system}";
           value = mkHost (args // common);
         }
       ) hosts

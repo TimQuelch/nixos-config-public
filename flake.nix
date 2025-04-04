@@ -26,35 +26,10 @@
       pre-commit-hooks,
       ...
     }:
-    flake-utils.lib.eachDefaultSystem (
-      system:
-      let
-        consts =
-          if (builtins.pathExists ./secrets/constants.nix) then import ./secrets/constants.nix else { };
-        constOrDefault = name: default: if (builtins.hasAttr name consts) then consts.${name} else default;
-        # List of hosts to generate
-        # `name` specifies which configuration to lookup
-        # `hostname` defaults to name if not specified. lookup from env if we don't care
-        # `hardware` specifies which hardware_configuration to lookup. ignored for home-manager
-        hosts = [
-          {
-            name = "alpha";
-            hardware = "desktop";
-          }
-          {
-            name = "epsilon";
-            hardware = "laptop";
-          }
-          {
-            name = "work-laptop";
-            hostname = constOrDefault "workHostname" "work-laptop";
-          }
-          {
-            name = "wsl";
-            hardware = "wsl";
-          }
-        ];
-        pkgs = import nixpkgs {
+    let
+      mkPkgs =
+        system:
+        import nixpkgs {
           inherit system;
           config = {
             allowUnfree = true;
@@ -63,8 +38,38 @@
             hyprswitch.overlays.default
           ];
         };
-        nixOsFilter = pkgs.lib.filter (h: ((builtins.hasAttr "hardware" h) || (h.name == "wsl")));
-        mkHosts = import ./hosts { inherit nixpkgs pkgs inputs; };
+
+      consts =
+        if (builtins.pathExists ./secrets/constants.nix) then import ./secrets/constants.nix else { };
+      constOrDefault = name: default: if (builtins.hasAttr name consts) then consts.${name} else default;
+      # List of hosts to generate
+      # `name` specifies which configuration to lookup
+      # `hostname` defaults to name if not specified. lookup from env if we don't care
+      # `hardware` specifies which hardware_configuration to lookup. ignored for home-manager
+      hosts = [
+        {
+          name = "alpha";
+          hardware = "desktop";
+        }
+        {
+          name = "epsilon";
+          hardware = "laptop";
+        }
+        {
+          name = "work-laptop";
+          hostname = constOrDefault "workHostname" "work-laptop";
+        }
+        {
+          name = "wsl";
+          hardware = "wsl";
+        }
+      ];
+    in
+
+    flake-utils.lib.eachDefaultSystem (
+      system:
+      let
+        pkgs = mkPkgs system;
 
         preCommit = pre-commit-hooks.lib.${system}.run {
           src = ./.;
@@ -72,12 +77,7 @@
         };
       in
       {
-        packages = {
-          # Make nixos configs for only hosts that have hardware associated
-          nixosConfigurations = mkHosts.mkNixOsHosts (nixOsFilter hosts);
-          # Make home-manager configs for all hosts
-          homeConfigurations = mkHosts.mkHomeManagerHosts hosts;
-        } // pkgs.custom;
+        packages = pkgs.custom;
         devShells.default = pkgs.mkShell {
           inherit (preCommit) shellHook;
           buildInputs = preCommit.enabledPackages;
@@ -92,6 +92,18 @@
             git-filter-repo
           ];
         };
+      }
+    )
+    // flake-utils.lib.eachDefaultSystemPassThrough (
+      system:
+      let
+        pkgs = mkPkgs system;
+        mkHosts = import ./hosts { inherit nixpkgs pkgs inputs; };
+        nixOsFilter = pkgs.lib.filter (h: ((builtins.hasAttr "hardware" h) || (h.name == "wsl")));
+      in
+      {
+        nixosConfigurations = mkHosts.mkNixOsHosts (nixOsFilter hosts);
+        homeConfigurations = mkHosts.mkHomeManagerHosts hosts;
       }
     );
 }
