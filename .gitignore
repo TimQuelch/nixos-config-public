@@ -1,2 +1,5 @@
 result
 .aider*
+
+# pre-commit config is symlinked by dev shell
+.pre-commit-config.yaml

@@ -12,12 +12,16 @@
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
     hyprswitch.url = "github:H3rmt/hyprswitch";
     hyprswitch.inputs.nixpkgs.follows = "nixpkgs";
+    pre-commit-hooks.url = "github:cachix/git-hooks.nix";
+    pre-commit-hooks.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
     inputs@{
       nixpkgs,
       flake-utils,
+      hyprswitch,
+      pre-commit-hooks,
       ...
     }:
     flake-utils.lib.eachDefaultSystem (
@@ -50,11 +54,16 @@
             allowUnfree = true;
           };
           overlays = (import ./overlays) ++ [
-            inputs.hyprswitch.overlays.default
+            hyprswitch.overlays.default
           ];
         };
         nixOsFilter = pkgs.lib.filter (h: builtins.hasAttr "hardware" h);
         mkHosts = import ./hosts { inherit nixpkgs pkgs inputs; };
+
+        preCommit = pre-commit-hooks.lib.${system}.run {
+          src = ./.;
+          hooks.nixfmt-rfc-style.enable = true;
+        };
       in
       {
         packages = {
@@ -64,6 +73,8 @@
           homeConfigurations = mkHosts.mkHomeManagerHosts hosts;
         } // pkgs.custom;
         devShells.default = pkgs.mkShell {
+          inherit (preCommit) shellHook;
+          buildInputs = preCommit.enabledPackages;
           packages = with pkgs; [
             sops
             age
