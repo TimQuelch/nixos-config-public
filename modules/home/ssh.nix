@@ -129,11 +129,12 @@ in
     # solution would be to link the authorized keys file to a file in the nix store, however this
     # would remove the ability to edit this file easily
     systemd.user.services.add-authorised-ssh-key = {
-      Unit.Description = "Add primary ssh key to authorised_keys file";
-      Install = {
-        WantedBy = [ "sops-nix.service" ];
+      Unit = {
+        Description = "Add primary ssh key to authorised_keys file";
         After = [ "sops-nix.service" ];
+        Wants = [ "sops-nix.service" ];
       };
+      Install.WantedBy = [ "default.target" ];
       Service =
         let
           keyPath = config.sops.secrets."ssh_auth_keys/primary.pub".path;
