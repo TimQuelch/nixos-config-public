@@ -6,6 +6,8 @@
     flake-utils.url = "github:numtide/flake-utils";
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    wsl.url = "github:nix-community/nixos-wsl";
+    wsl.inputs.nixpkgs.follows = "nixpkgs";
     sops-nix.url = "github:Mic92/sops-nix";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
     nix-index-database.url = "github:nix-community/nix-index-database";
@@ -47,6 +49,10 @@
             name = "work-laptop";
             hostname = constOrDefault "workHostname" "work-laptop";
           }
+          {
+            name = "wsl";
+            hardware = "wsl";
+          }
         ];
         pkgs = import nixpkgs {
           inherit system;
@@ -57,7 +63,7 @@
             hyprswitch.overlays.default
           ];
         };
-        nixOsFilter = pkgs.lib.filter (h: builtins.hasAttr "hardware" h);
+        nixOsFilter = pkgs.lib.filter (h: ((builtins.hasAttr "hardware" h) || (h.name == "wsl")));
         mkHosts = import ./hosts { inherit nixpkgs pkgs inputs; };
 
         preCommit = pre-commit-hooks.lib.${system}.run {

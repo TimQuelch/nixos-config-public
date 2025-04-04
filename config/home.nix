@@ -17,7 +17,7 @@
   # Configure nix in user config as well as root so that we have user-level garbage collection. This
   # ensures old home manager profiles are cleaned up
   nix = {
-    package = pkgs.nix;
+    package = lib.mkDefault pkgs.nix;
     settings = {
       experimental-features = [
         "nix-command"
