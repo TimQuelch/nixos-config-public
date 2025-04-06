@@ -19,7 +19,7 @@ let
         IOSchedulingClass = "idle";
         IOSchedulingPriority = 7;
         CPUSchedulingPolicy = "idle";
-        CPUWeight = 10;
+        CPUWeight = "idle";
         ConditionACPower = true;
       };
     };
@@ -33,7 +33,7 @@ let
         IOSchedulingClass = "idle";
         IOSchedulingPriority = 7;
         CPUSchedulingPolicy = "idle";
-        CPUWeight = 10;
+        CPUWeight = "idle";
         ConditionACPower = true;
       };
     };
