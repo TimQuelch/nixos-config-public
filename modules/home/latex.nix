@@ -10,7 +10,9 @@ let
 in
 {
   options.modules.latex = {
-    enable = lib.mkEnableOption "git config";
+    enable = lib.mkEnableOption "git config" // {
+      default = true;
+    };
   };
 
   config = lib.mkIf cfg.enable {
