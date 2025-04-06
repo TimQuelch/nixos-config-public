@@ -33,7 +33,7 @@ in
         enable = true;
         desktop = "${homeDir}/desktop";
         documents = "${homeDir}/documents";
-        download = "${homeDir}/download";
+        download = "${homeDir}/downloads";
         music = "${homeDir}/pictures";
         pictures = "${homeDir}/pictures";
         publicShare = "${homeDir}/public";
