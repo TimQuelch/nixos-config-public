@@ -7,7 +7,6 @@
 }:
 let
   cfg = config.modules.gui.hyprland;
-  defaultTerminal = "ghostty";
   nWorkspaces = 10;
   compress-png = pkgs.writeShellApplication {
     name = "compress-png";
@@ -47,7 +46,7 @@ in
     enable = lib.mkEnableOption "hyprland config";
     terminal = lib.mkOption {
       type = lib.types.str;
-      default = defaultTerminal;
+      default = "ghostty";
       description = "Terminal to use with hyprland";
     };
   };
