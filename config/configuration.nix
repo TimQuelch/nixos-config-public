@@ -76,8 +76,11 @@
 
   # Configure window and desktop enironments
   services.xserver.enable = true;
-  services.desktopManager.plasma6.enable = true;
-  services.displayManager.sddm.enable = true;
+  services.displayManager.sddm = {
+    enable = true;
+    wayland.enable = true;
+  };
+  qt.enable = true;
   programs.hyprland = {
     enable = true;
     withUWSM = true;
