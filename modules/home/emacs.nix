@@ -76,6 +76,7 @@ in
       gopls
       yaml-language-server
       terraform-ls
+      bicep
 
       # formatters
       black
