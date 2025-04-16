@@ -77,7 +77,9 @@
         };
       in
       {
-        packages = pkgs.custom;
+        packages = pkgs.custom // {
+          inherit (pkgs) mujmap aider-chat;
+        };
         devShells.default = pkgs.mkShell {
           inherit (preCommit) shellHook;
           buildInputs = preCommit.enabledPackages;
