@@ -155,6 +155,10 @@ in
         disable_hyprland_logo = true;
         enable_anr_dialog = false; # application not responding dialog
       };
+      ecosystem = {
+        no_update_news = true;
+        no_donation_nag = true;
+      };
     };
 
     programs.waybar.enable = true;
