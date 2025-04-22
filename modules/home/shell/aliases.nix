@@ -15,6 +15,7 @@ in
   config = lib.mkIf cfg.enable {
     home.shellAliases = {
       ls = "ls --color=auto";
+      j = "just";
     };
   };
 }

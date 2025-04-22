@@ -58,6 +58,7 @@
       awscli2
       bash-my-aws
       sshfs
+      just
     ];
     sessionVariables = {
       EDITOR = "vim";
