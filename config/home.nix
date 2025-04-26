@@ -59,6 +59,8 @@
       bash-my-aws
       sshfs
       just
+      zip
+      unzip
     ];
     sessionVariables = {
       EDITOR = "vim";
