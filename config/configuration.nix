@@ -148,5 +148,5 @@
   services.dbus.implementation = "broker";
 
   # Should be overwritten in host specific configs
-  system.stateVersion = lib.mkDefault "24.05";
+  system.stateVersion = lib.mkDefault "25.05";
 }

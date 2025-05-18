@@ -82,5 +82,5 @@
   modules.nix-shell-helper.enable = lib.mkDefault true;
 
   # Should be overwritten in host specific configs
-  home.stateVersion = lib.mkDefault "24.05";
+  home.stateVersion = lib.mkDefault "25.05";
 }
