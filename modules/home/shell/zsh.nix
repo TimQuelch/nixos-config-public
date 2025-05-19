@@ -43,25 +43,25 @@ in
           file = "p10k.zsh";
         }
       ];
-      initExtraBeforeCompInit = ''
-        eval $(bma-init)
-      '';
-      completionInit = ''
-        autoload -Uz compinit && compinit
-        autoload bashcompinit && bashcompinit
-        complete -C '${pkgs.awscli2}/bin/aws_completer' aws
-      '';
-      # Do this here instead of in a plugin so that it this config happens after
-      # the fzf zsh eval. We want this to supercede it
-      initExtra =
-        (lib.optionalString cfg.customFzfTabCompletion ''
-          source ${customFzfCompletionDir}/zsh/fzf-zsh-completion.sh
-        '')
-        + ''
+      completionInit = lib.mkMerge [
+        "autoload -Uz compinit && compinit"
+        "autoload bashcompinit && bashcompinit"
+        "complete -C '${pkgs.awscli2}/bin/aws_completer' aws"
+      ];
+      initContent = lib.mkMerge [
+        # Before compinit
+        (lib.mkOrder 550 "eval $(bma-init)")
+        # Ensure this happens after fzf initialisation (910) so it supersedes it
+        (lib.mkIf cfg.customFzfTabCompletion (
+          lib.mkOrder 911 "source ${customFzfCompletionDir}/zsh/fzf-zsh-completion.sh"
+        ))
+        # Set up edit commandline keybind
+        ''
           autoload -z edit-command-line
           zle -N edit-command-line
           bindkey "^X^E" edit-command-line
-        '';
+        ''
+      ];
       history = {
         ignoreDups = true;
         ignoreSpace = true;
