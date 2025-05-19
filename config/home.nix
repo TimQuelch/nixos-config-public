@@ -55,8 +55,6 @@
       julia
       magic-wormhole
       gh
-      awscli2
-      bash-my-aws
       sshfs
       just
       zip

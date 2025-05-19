@@ -46,11 +46,8 @@ in
       completionInit = lib.mkMerge [
         "autoload -Uz compinit && compinit"
         "autoload bashcompinit && bashcompinit"
-        "complete -C '${pkgs.awscli2}/bin/aws_completer' aws"
       ];
       initContent = lib.mkMerge [
-        # Before compinit
-        (lib.mkOrder 550 "eval $(bma-init)")
         # Ensure this happens after fzf initialisation (910) so it supersedes it
         (lib.mkIf cfg.customFzfTabCompletion (
           lib.mkOrder 911 "source ${customFzfCompletionDir}/zsh/fzf-zsh-completion.sh"
