@@ -9,17 +9,13 @@ let
 
   awsModule = lib.types.submodule {
     options = {
-      enable = lib.mkEnableOption "aws tooling" // {
-        default = true;
-      };
+      enable = lib.mkEnableOption "aws tooling";
     };
   };
 
   azureModule = lib.types.submodule {
     options = {
-      enable = lib.mkEnableOption "azure tooling" // {
-        default = true;
-      };
+      enable = lib.mkEnableOption "azure tooling";
       extensions = lib.mkOption {
         type = lib.types.listOf lib.types.package;
       };

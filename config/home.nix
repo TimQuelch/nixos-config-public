@@ -78,6 +78,8 @@
   modules.dirs.enable = lib.mkDefault true;
   modules.aider.enable = lib.mkDefault true;
   modules.nix-shell-helper.enable = lib.mkDefault true;
+  modules.cloud.aws = lib.mkDefault true;
+  modules.cloud.azure = lib.mkDefault true;
 
   # Should be overwritten in host specific configs
   home.stateVersion = lib.mkDefault "25.05";
