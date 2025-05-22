@@ -18,6 +18,7 @@ let
       enable = lib.mkEnableOption "azure tooling";
       extensions = lib.mkOption {
         type = lib.types.listOf lib.types.package;
+        default = [ ];
       };
     };
   };
