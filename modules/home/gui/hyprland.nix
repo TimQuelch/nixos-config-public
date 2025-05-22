@@ -71,7 +71,13 @@ in
 
     home.activation.hyprpolkitagent =
       lib.hm.dag.entryBetween [ "linkGeneration" ] [ "writeBoundary" ]
-        ''run ${config.systemd.user.systemctlPath} --user enable hyprpolkitagent.service'';
+        ''
+          run ${config.systemd.user.systemctlPath} \
+            --user \
+            --force \
+            enable \
+            hyprpolkitagent.service
+        '';
 
     wayland.windowManager.hyprland.settings = {
       # Run some commands as  systemd transient serivces so we get logs in journal
