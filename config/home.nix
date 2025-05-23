@@ -23,6 +23,8 @@
         "nix-command"
         "flakes"
       ];
+      max-jobs = "auto";
+      cores = 0;
     };
     gc = {
       automatic = true;

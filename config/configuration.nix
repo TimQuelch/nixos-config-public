@@ -16,9 +16,10 @@
       ];
       use-xdg-base-directories = true;
       trusted-users = [
-        "root"
         user
       ];
+      max-jobs = "auto";
+      cores = 0;
     };
     gc = {
       automatic = true;
