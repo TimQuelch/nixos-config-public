@@ -64,7 +64,6 @@ in
         kdePackages.xwaylandvideobridge
         nwg-displays
         wl-clipboard
-        hyprswitch
         brightnessctl
       ])
       ++ screenshotScripts;
@@ -84,7 +83,6 @@ in
       exec-once = [
         "waybar"
         "systemd-run --user --wait ${pkgs.custom.hyprland-scripting}/bin/hyprland-listener"
-        "systemd-run --user --wait hyprswitch init"
       ];
       "$mod" = "SUPER";
       bind =
@@ -98,8 +96,6 @@ in
           "$mod, L, movefocus, r"
           "$mod, J, movefocus, d"
           "$mod, K, movefocus, u"
-
-          "$mod, TAB, exec, uwsm app -- hyprswitch gui --mod-key super_l --key tab --close mod-key-release --switch-type workspace && hyprswitch dispatch"
 
           # Special workspace
           "$mod, S, togglespecialworkspace, magic"
@@ -267,5 +263,19 @@ in
       save_filename_format=screenshot-%Y%m%d-%H%M%S.png
       early_exit=true
     '';
+
+    programs.hyprshell = {
+      enable = true;
+      settings = {
+        launcher.enable = false;
+        windows = {
+          overview.enable = false;
+          switch = {
+            enable = true;
+            open.modifier = "super";
+          };
+        };
+      };
+    };
   };
 }

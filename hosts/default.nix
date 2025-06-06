@@ -88,6 +88,7 @@ let
             ../modules/home
             inputs.sops-nix.homeManagerModules.sops
             inputs.nix-index-database.hmModules.nix-index
+            inputs.hyprswitch.homeModules.hyprshell
           ] ++ (pathIfExists ./${name}/home.nix);
           common = {
             inherit

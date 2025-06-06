@@ -22,7 +22,6 @@
     inputs@{
       nixpkgs,
       flake-utils,
-      hyprswitch,
       pre-commit-hooks,
       ...
     }:
@@ -34,9 +33,7 @@
           config = {
             allowUnfree = true;
           };
-          overlays = (import ./overlays) ++ [
-            hyprswitch.overlays.default
-          ];
+          overlays = (import ./overlays);
         };
 
       consts =
