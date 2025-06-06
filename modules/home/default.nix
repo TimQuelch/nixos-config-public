@@ -4,6 +4,7 @@
     ./shell
     ./gui
     ./work
+    ./cloud
     ./ssh.nix
     ./emacs.nix
     ./email.nix
@@ -12,6 +13,5 @@
     ./aider.nix
     ./nix-shell-helper.nix
     ./latex.nix
-    ./cloud.nix
   ];
 }

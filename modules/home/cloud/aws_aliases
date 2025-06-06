@@ -1,0 +1,48 @@
+# -*- mode: sh; -*-
+[toplevel]
+
+.stack-template = !:;f() { # cloudformation get-template --stack-name
+    aws cloudformation get-template --stack-name "$@" | jq -j .TemplateBody
+    }; f
+
+.stack-to-script = !:;f() { # cloudformation describe-stacks --stack-name
+    set -eu -o pipefail
+    stack_name="$1"
+    dir="$2"
+    shift 2
+    mkdir -p "$dir"
+    aws .stack-template "$stack_name" "$@" >"$dir/stack.yaml"
+    echo "Created $dir/stack.yaml" >&2
+    aws cloudformation get-stack-policy --stack-name "$stack_name" | jq -r .StackPolicyBody >"$dir/stack_policy.json"
+
+    echo "Created $dir/stack_policy.json" >&2
+
+    stack="$(aws cloudformation describe-stacks --stack-name "$stack_name")" || return "$?"
+    params="$(<<<"$stack" jq -r '.Stacks[0] | (.Parameters//[])[] | .ParameterKey+"="+.ParameterValue | " "*8+@sh+" \\"')"
+    tags="$(<<<"$stack" jq -r '.Stacks[0].Tags[] | .Key+"="+.Value | " "*8+@sh+" \\"')"
+
+    (
+        echo '#!/usr/bin/env bash'
+        echo
+        echo 'set -eu -o pipefail'
+        printf 'original_stack_name=%q\n' "$stack_name"
+        echo 'stack_name="${1:?no stack name given, perhaps you want "$original_stack_name"}"'
+        echo 'shift'
+        echo 'cd "$(dirname "$0")"'
+        echo
+        echo 'aws cloudformation deploy \'
+        echo '    --stack-name "$stack_name" \'
+        echo '    --template-file ./stack.yaml \'
+        echo '    --no-fail-on-empty-changeset \'
+        echo '    --capabilities CAPABILITY_NAMED_IAM \'
+        [ -n "$params" ] && { echo '    --parameter-overrides \'; echo "$params"; }
+        [ -n "$tags" ]   && { echo '    --tags \'; echo "$tags"; }
+        echo '    "$@"'
+        echo
+        echo 'if [ -s ./stack_policy.json ]; then'
+        echo '    aws cloudformation set-stack-policy --stack-name "$stack_name" --stack-policy-body "file://./stack_policy.json"'
+        echo 'fi'
+
+    ) >"$dir/deploy.sh"
+    echo "Created $dir/deploy.sh" >&2
+    }; f

@@ -43,6 +43,8 @@ in
         ssm-session-manager-plugin
       ];
 
+      home.file.".aws/cli/alias".source = ./aws_aliases;
+
       programs.zsh = {
         # Before completionInit
         initContent = (lib.mkOrder 550 "eval $(bma-init)");
