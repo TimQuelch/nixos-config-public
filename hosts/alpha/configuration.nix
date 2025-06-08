@@ -29,7 +29,7 @@
 
   sops.secrets.k3s_token = { };
   services.k3s = {
-    enable = true;
+    enable = false;
     clusterInit = true;
     tokenFile = config.sops.secrets.k3s_token.path;
     extraFlags = [ "--flannel-backend wireguard-native" ];
