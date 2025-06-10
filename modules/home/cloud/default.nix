@@ -41,6 +41,7 @@ in
         awscli2
         bash-my-aws
         ssm-session-manager-plugin
+        pkgs.python3Packages.cfn-flip
       ];
 
       home.file.".aws/cli/alias".source = ./aws_aliases;
