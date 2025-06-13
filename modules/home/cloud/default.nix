@@ -46,6 +46,11 @@ in
 
       home.file.".aws/cli/alias".source = ./aws_aliases;
 
+      home.sessionVariables = {
+        AWS_RETRY_MODE = "adaptive";
+        AWS_MAX_ATTEMPTS = "10";
+      };
+
       programs.zsh = {
         # Before completionInit
         initContent = (lib.mkOrder 550 "eval $(bma-init)");
