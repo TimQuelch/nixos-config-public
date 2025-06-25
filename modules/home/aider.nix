@@ -74,5 +74,7 @@ in
       };
       Install.WantedBy = [ "default.target" ];
     };
+
+    programs.git.ignores = [ ".aider*" ];
   };
 }
