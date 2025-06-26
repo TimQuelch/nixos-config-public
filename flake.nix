@@ -76,6 +76,7 @@
       {
         packages = pkgs.custom // {
           inherit (pkgs) mujmap aider-chat;
+          netboot = import ./packages/netboot { inherit nixpkgs system; };
         };
         devShells.default = pkgs.mkShell {
           inherit (preCommit) shellHook;
