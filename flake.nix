@@ -67,6 +67,7 @@
       system:
       let
         pkgs = mkPkgs system;
+        bootables = import ./packages/bootables { inherit nixpkgs system; };
 
         preCommit = pre-commit-hooks.lib.${system}.run {
           src = ./.;
@@ -76,7 +77,7 @@
       {
         packages = pkgs.custom // {
           inherit (pkgs) mujmap aider-chat;
-          netboot = import ./packages/netboot { inherit nixpkgs system; };
+          inherit (bootables) netboot iso;
         };
         devShells.default = pkgs.mkShell {
           inherit (preCommit) shellHook;
