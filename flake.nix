@@ -3,9 +3,15 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
+    nixos-images.url = "github:nix-community/nixos-images";
+    nixos-images.inputs.nixos-stable.follows = "nixpkgs"; # unused because only the module is used
+    nixos-images.inputs.nixos-unstable.follows = "nixpkgs"; # unused because only the module is used
     flake-utils.url = "github:numtide/flake-utils";
     home-manager.url = "github:nix-community/home-manager/release-25.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    disko.url = "github:nix-community/disko";
+    disko.inputs.nixpkgs.follows = "nixpkgs";
+    nixos-facter-modules.url = "github:numtide/nixos-facter-modules";
     wsl.url = "github:nix-community/nixos-wsl";
     wsl.inputs.nixpkgs.follows = "nixpkgs";
     sops-nix.url = "github:Mic92/sops-nix";
@@ -22,6 +28,7 @@
     inputs@{
       nixpkgs,
       flake-utils,
+      nixos-images,
       pre-commit-hooks,
       ...
     }:
@@ -60,6 +67,9 @@
           name = "wsl";
           hardware = "wsl";
         }
+        {
+          name = "beta";
+        }
       ];
     in
 
@@ -67,7 +77,7 @@
       system:
       let
         pkgs = mkPkgs system;
-        bootables = import ./packages/bootables { inherit nixpkgs system; };
+        bootables = import ./packages/bootables { inherit nixpkgs nixos-images system; };
 
         preCommit = pre-commit-hooks.lib.${system}.run {
           src = ./.;
@@ -77,7 +87,7 @@
       {
         packages = pkgs.custom // {
           inherit (pkgs) mujmap aider-chat;
-          inherit (bootables) netboot iso;
+          inherit (bootables) iso;
         };
         devShells.default = pkgs.mkShell {
           inherit (preCommit) shellHook;
@@ -103,7 +113,7 @@
         nixOsFilter = pkgs.lib.filter (h: ((builtins.hasAttr "hardware" h) || (h.name == "wsl")));
       in
       {
-        nixosConfigurations = mkHosts.mkNixOsHosts (nixOsFilter hosts);
+        nixosConfigurations = mkHosts.mkNixOsHosts hosts;
         homeConfigurations = mkHosts.mkHomeManagerHosts hosts;
       }
     );

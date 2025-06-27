@@ -19,9 +19,9 @@ let
     {
       extraArgs,
       name,
-      hardware,
       user,
       homeManagerModuleList,
+      hardware ? "",
       ...
     }:
     let
@@ -34,26 +34,34 @@ let
       modules =
         (if hardware == "wsl" then [ ../config/wsl.nix ] else [ ../config/configuration.nix ])
         ++ [
-          nixpkgs.nixosModules.readOnlyPkgs
-          (
-            { ... }:
-            {
-              nixpkgs.pkgs = pkgs;
-            }
-          )
-          ../modules/os
+          # nixpkgs.nixosModules.readOnlyPkgs # TODO conflicts with facter modules
           inputs.home-manager.nixosModules.home-manager
           inputs.sops-nix.nixosModules.sops
-          {
-            home-manager = {
-              useGlobalPkgs = true;
-              useUserPackages = true;
-              extraSpecialArgs = extraArgs';
-              users.${user} = {
-                imports = homeManagerModuleList;
+          inputs.disko.nixosModules.disko
+          inputs.nixos-facter-modules.nixosModules.facter
+          ../modules/os
+          (
+            { lib, ... }:
+            {
+              # use the already customised nixpkgs
+              nixpkgs.pkgs = pkgs;
+
+              # use facter to handle hardware configuration if we've generated a report
+              facter = lib.mkIf (builtins.pathExists ./${name}/facter.json) {
+                reportPath = ./${name}/facter.json;
               };
-            };
-          }
+
+              # base global home manager config
+              home-manager = {
+                useGlobalPkgs = true;
+                useUserPackages = true;
+                extraSpecialArgs = extraArgs';
+                users.${user} = {
+                  imports = homeManagerModuleList;
+                };
+              };
+            }
+          )
         ]
         ++ (pathIfExists ./${name}/configuration.nix)
         ++ (pathIfExists ../hardware/${hardware}-hardware-configuration.nix);
