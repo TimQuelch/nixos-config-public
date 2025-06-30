@@ -10,7 +10,9 @@ let
 in
 {
   options.modules.os.zswap = {
-    enable = lib.mkEnableOption "enable zswap";
+    enable = lib.mkEnableOption "enable zswap" // {
+      default = true;
+    };
   };
 
   config = lib.mkIf cfg.enable {
