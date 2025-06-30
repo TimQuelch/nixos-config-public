@@ -5,6 +5,8 @@
   ...
 }:
 {
+  modules.os.desktop.enable = true;
+
   networking.wireless.iwd = {
     enable = true;
     settings = {
@@ -13,7 +15,6 @@
       };
     };
   };
-  networking.useDHCP = true;
   networking.wireless.userControlled.enable = true;
 
   hardware.bluetooth.enable = true;

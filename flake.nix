@@ -12,8 +12,6 @@
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
     nixos-facter-modules.url = "github:numtide/nixos-facter-modules";
-    wsl.url = "github:nix-community/nixos-wsl";
-    wsl.inputs.nixpkgs.follows = "nixpkgs";
     sops-nix.url = "github:Mic92/sops-nix";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
     nix-index-database.url = "github:nix-community/nix-index-database";
@@ -64,10 +62,6 @@
           hostname = constOrDefault "workHostname" "work-laptop";
         }
         {
-          name = "wsl";
-          hardware = "wsl";
-        }
-        {
           name = "beta";
         }
       ];
@@ -110,7 +104,6 @@
       let
         pkgs = mkPkgs system;
         mkHosts = import ./hosts { inherit nixpkgs pkgs inputs; };
-        nixOsFilter = pkgs.lib.filter (h: ((builtins.hasAttr "hardware" h) || (h.name == "wsl")));
       in
       {
         nixosConfigurations = mkHosts.mkNixOsHosts hosts;

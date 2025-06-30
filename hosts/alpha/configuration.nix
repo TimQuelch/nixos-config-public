@@ -5,6 +5,8 @@
   ...
 }:
 {
+  modules.os.desktop.enable = true;
+
   services.libinput.mouse.accelProfile = "flat";
 
   networking.wireless.iwd = {

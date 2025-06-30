@@ -32,8 +32,7 @@ let
     nixpkgs.lib.nixosSystem {
       specialArgs = extraArgs';
       modules =
-        (if hardware == "wsl" then [ ../config/wsl.nix ] else [ ../config/configuration.nix ])
-        ++ [
+        [
           # nixpkgs.nixosModules.readOnlyPkgs # TODO conflicts with facter modules
           inputs.home-manager.nixosModules.home-manager
           inputs.sops-nix.nixosModules.sops
