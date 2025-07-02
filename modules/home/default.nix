@@ -13,5 +13,7 @@
     ./aider.nix
     ./nix-shell-helper.nix
     ./latex.nix
+    ./nix.nix
+    ./home.nix
   ];
 }

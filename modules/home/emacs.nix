@@ -118,5 +118,7 @@ in
         popd
       fi
     '';
+
+    home.sessionVariables.EDITOR = "emacsclient -t";
   };
 }
