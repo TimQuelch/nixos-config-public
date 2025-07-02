@@ -1,0 +1,27 @@
+From c0778e83bc4d81471ea9132e13e17ea0e6d6e4b1 Mon Sep 17 00:00:00 2001
+From: Tim Quelch <timothy.quelch@versent.com.au>
+Date: Wed, 2 Jul 2025 13:03:19 +1000
+Subject: [PATCH] Add setuptools config
+
+---
+ pyproject.toml | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/pyproject.toml b/pyproject.toml
+index a6db726..a3f64c1 100644
+--- a/pyproject.toml
++++ b/pyproject.toml
+@@ -10,3 +10,10 @@ dependencies = [
+     "requests>=2.32.3",
+     "shtab>=1.7.1",
+ ]
++
++[tool.setuptools]
++packages = []
++py-modules = [ "csi" ]
++
++[project.scripts]
++csi = "csi:main"
+-- 
+2.49.0
+
